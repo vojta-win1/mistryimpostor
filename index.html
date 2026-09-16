@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f4fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16141d" media="(prefers-color-scheme: dark)">
+  <title>Mistr Impostor</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <main id="app">
+    <!-- Úvod -->
+    <section class="screen" data-screen="home" hidden>
+      <header class="screen-header">
+        <h1 class="logo">Mistr Impostor</h1>
+        <p class="muted">Kdo mezi vámi nezná tajemství?</p>
+      </header>
+      <div class="stack">
+        <button class="btn btn-primary" data-go="local-setup">Hrát na jednom telefonu</button>
+        <button class="btn" data-go="online-create">Založit místnost</button>
+        <button class="btn" data-go="online-join">Připojit se</button>
+      </div>
+    </section>
+
+    <!-- Lokální režim -->
+    <section class="screen" data-screen="local-setup" hidden>
+      <header class="screen-header"><button class="btn-back" data-go="home" aria-label="Zpět">‹</button><h2>Nastavení</h2></header>
+      <div class="stack" data-slot="content"></div>
+    </section>
+
+    <section class="screen" data-screen="local-pass" hidden>
+      <div class="stack center" data-slot="content"></div>
+    </section>
+
+    <section class="screen" data-screen="local-role" hidden>
+      <div class="stack center" data-slot="content"></div>
+    </section>
+
+    <section class="screen" data-screen="local-round" hidden>
+      <header class="screen-header"><h2>Kolo</h2></header>
+      <div class="stack" data-slot="content"></div>
+    </section>
+
+    <section class="screen" data-screen="local-result" hidden>
+      <header class="screen-header"><h2>Výsledek</h2></header>
+      <div class="stack" data-slot="content"></div>
+    </section>
+
+    <!-- Online režim -->
+    <section class="screen" data-screen="online-create" hidden>
+      <header class="screen-header"><button class="btn-back" data-go="home" aria-label="Zpět">‹</button><h2>Nová místnost</h2></header>
+      <div class="stack" data-slot="content"><p class="muted">Připravujeme…</p></div>
+    </section>
+
+    <section class="screen" data-screen="online-join" hidden>
+      <header class="screen-header"><button class="btn-back" data-go="home" aria-label="Zpět">‹</button><h2>Připojit se</h2></header>
+      <div class="stack" data-slot="content"><p class="muted">Připravujeme…</p></div>
+    </section>
+
+    <section class="screen" data-screen="online-lobby" hidden>
+      <header class="screen-header"><h2>Lobby</h2></header>
+      <div class="stack" data-slot="content"></div>
+    </section>
+
+    <section class="screen" data-screen="online-role" hidden>
+      <div class="stack center" data-slot="content"></div>
+    </section>
+  </main>
+</body>
+</html>

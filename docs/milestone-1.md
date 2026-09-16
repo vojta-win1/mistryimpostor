@@ -5,10 +5,10 @@ Cíl: parta si může zahrát na jednom telefonu (kompletně) a v online režimu
 Postupuj v tomto pořadí a po každém kroku commitni.
 
 ## 1. Kostra a obsah
-- [ ] Založ strukturu podle `CLAUDE.md`, `index.html` s prázdnými obrazovkami, `styles/main.css` (mobil first, světlé + tmavé téma).
+- [x] Založ strukturu podle `CLAUDE.md`, `index.html` s prázdnými obrazovkami, `styles/main.css` (mobil first, světlé + tmavé téma).
 - [ ] `content/words.json` – přenes témata a slova ze souboru `legacy/impostor-slova.html` (dodám do repa). Minimálně 8 témat po 15 slovech.
 - [ ] `content/questions.json` – přenes dvojice z `legacy/impostor-otazky.html`. Zatím beze změn, přepisujeme později.
-- [ ] `src/game/engine.js` + testy (vitest): `createGame(settings)`, `dealRound(state, content)`, `nextRoundState`. Pokryj: limit impostorů, historie losu, neopakování obsahu, losování a/b u otázek.
+- [x] `src/game/engine.js` + testy (vitest): `createGame(settings)`, `dealRound(state, content)`, `nextRoundState`. Pokryj: limit impostorů, historie losu, neopakování obsahu, losování a/b u otázek.
 
 ## 2. Lokální režim
 - [ ] Úvodní obrazovka: tlačítka „Hrát na jednom telefonu", „Založit místnost", „Připojit se".
