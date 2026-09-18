@@ -171,7 +171,54 @@ p { margin: 0; }
   gap: 6px;
 }
 
-.field > label { font-weight: 600; }
+.field-label { font-weight: 600; }
+
+.field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.small { font-size: 0.9rem; }
+
+.btn-link {
+  appearance: none;
+  min-height: var(--tap);
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  appearance: none;
+  min-height: var(--tap);
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.chip[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
 
 .input {
   min-height: var(--tap);
@@ -185,13 +232,15 @@ p { margin: 0; }
 
 .stepper {
   display: grid;
-  grid-template-columns: var(--tap) 1fr var(--tap);
+  grid-template-columns: 64px 1fr 64px;
   align-items: center;
   gap: 8px;
   text-align: center;
   font-size: 1.4rem;
   font-weight: 700;
 }
+
+.stepper .btn { min-height: 52px; padding: 0; font-size: 1.5rem; }
 
 .segmented {
   display: grid;
@@ -213,7 +262,8 @@ p { margin: 0; }
 }
 
 .segmented button[aria-pressed="true"] {
-  background: var(--surface);
+  background: var(--text);
+  color: var(--bg);
   box-shadow: var(--shadow);
 }
 
@@ -257,6 +307,20 @@ p { margin: 0; }
 .warning {
   color: var(--danger);
   font-weight: 700;
+}
+
+.card { display: flex; flex-direction: column; gap: 8px; }
+
+.pass-title { font-size: 1.8rem; }
+
+.result-who { font-size: 1.4rem; font-weight: 800; color: var(--danger); }
+
+.list-numbered { counter-reset: order; }
+.list-numbered > li { counter-increment: order; font-weight: 600; }
+.list-numbered > li::before {
+  content: counter(order) ".";
+  min-width: 1.5em;
+  color: var(--muted);
 }
 
 .list {

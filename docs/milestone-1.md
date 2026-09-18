@@ -11,10 +11,10 @@ Postupuj v tomto pořadí a po každém kroku commitni.
 - [x] `src/game/engine.js` + testy (vitest): `createGame(settings)`, `dealRound(state, content)`, `nextRoundState`. Pokryj: limit impostorů, historie losu, neopakování obsahu, losování a/b u otázek.
 
 ## 2. Lokální režim
-- [ ] Úvodní obrazovka: tlačítka „Hrát na jednom telefonu", „Založit místnost", „Připojit se".
-- [ ] Nastavení: počet hráčů (3–12), impostorů (1–4), režim Slova/Otázky, přepínač „Impostor ví, že jím je", výběr témat (u slov).
-- [ ] Sekvence: „Telefon dej hráči N" → „Ukázat" → role → „Skrýt a předat dál" → po posledním hráči obrazovka kola (pořadí odpovědí od náhodného hráče) → „Odhalit" → výsledek → „Další kolo" (nový los, stejné nastavení) / „Nastavení".
-- [ ] Obrazovka role: slovo velkým písmem, u impostora jen téma (u slov) nebo jeho otázka (u otázek) s varováním, pokud je přepínač zapnutý.
+- [x] Úvodní obrazovka: tlačítka „Hrát na jednom telefonu", „Založit místnost", „Připojit se".
+- [x] Nastavení: počet hráčů (3–12), impostorů (1–4), režim Slova/Otázky, přepínač „Impostor ví, že jím je", výběr témat (u slov).
+- [x] Sekvence: „Telefon dej hráči N" → „Ukázat" → role → „Skrýt a předat dál" → po posledním hráči obrazovka kola (pořadí odpovědí od náhodného hráče) → „Odhalit" → výsledek → „Další kolo" (nový los, stejné nastavení) / „Nastavení".
+- [x] Obrazovka role: slovo velkým písmem, u impostora jen téma (u slov) nebo jeho otázka (u otázek) s varováním, pokud je přepínač zapnutý.
 
 ## 3. Supabase
 - [ ] `supabase/schema.sql`: tabulky `rooms`, `players`, RLS (hráč vidí jen svou místnost, píše jen svůj řádek; host mění místnost), Realtime publikace pro obě tabulky.

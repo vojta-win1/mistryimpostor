@@ -1,20 +1,12 @@
-// Router obrazovek a bootstrap.
+// Bootstrap aplikace.
+import { show } from './ui/router.js';
+import { loadContent } from './game/content.js';
+import { initLocal } from './local/local.js';
 
-const screens = new Map(
-  [...document.querySelectorAll('[data-screen]')].map((el) => [el.dataset.screen, el]),
-);
+const contentPromise = loadContent();
+contentPromise.catch((err) => console.error(err));
 
-export function show(name) {
-  if (!screens.has(name)) throw new Error(`Neznámá obrazovka: ${name}`);
-  for (const [key, el] of screens) el.hidden = key !== name;
-  window.scrollTo(0, 0);
-  return screens.get(name);
-}
-
-document.addEventListener('click', (e) => {
-  const target = e.target.closest('[data-go]');
-  if (target) show(target.dataset.go);
-});
+initLocal({ getContent: () => contentPromise });
 
 const params = new URLSearchParams(location.search);
 show(params.has('room') ? 'online-join' : 'home');
