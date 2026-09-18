@@ -139,18 +139,18 @@ function isLastSeat() {
   return seat === game.settings.playerIds.length - 1;
 }
 
-function passOn() {
-  if (isLastSeat()) return renderRound();
+function passOn(dir = 'forward') {
+  if (isLastSeat()) return renderRound(dir);
   seat += 1;
-  renderRole();
+  renderRole(dir);
 }
 
-function renderRole() {
+function renderRole(dir = 'forward') {
   const id = playerId();
   const last = isLastSeat();
   let viewed = false;
 
-  const passBtn = el('button', { class: 'btn btn-primary', disabled: true, onclick: passOn },
+  const passBtn = el('button', { class: 'btn btn-primary', disabled: true, onclick: () => passOn() },
     last ? 'Začít kolo' : 'Předat dál');
   const hint = el('p', { class: 'muted small', 'aria-live': 'polite' },
     'Podrž kartu a uvidíš svou roli. Po puštění se zase zakryje.');
@@ -160,7 +160,7 @@ function renderRole() {
     front: cardCover(id),
     back: roleCard(roleFor(game, id), game.round.mode),
     canSwipe: () => viewed,
-    onSwipeLeft: passOn,
+    onSwipeLeft: () => passOn('fade'), // karta už odletěla, obrazovka jen prolne
     onOpen: () => {
       if (viewed) return;
       viewed = true;
@@ -171,7 +171,7 @@ function renderRole() {
     },
   });
 
-  render('local-role',
+  show('local-role', { dir, content: [
     el('div', { class: 'role-head' },
       el('p', { class: 'muted' }, `Kolo ${game.round.number} · hráč ${seat + 1} z ${game.settings.playerIds.length}`),
       el('h2', { class: 'pass-title' }, `Telefon má hráč ${id}`),
@@ -180,8 +180,7 @@ function renderRole() {
     card,
     hint,
     passBtn,
-  );
-  show('local-role');
+  ] });
 }
 
 function cardCover(id) {
@@ -228,9 +227,9 @@ function roleCard(role, mode) {
   );
 }
 
-function renderRound() {
+function renderRound(dir = 'forward') {
   const { round } = game;
-  render('local-round',
+  show('local-round', { dir, content: [
     el('p', {}, round.mode === 'words'
       ? 'Každý řekne jedno slovo, které souvisí s tajným slovem.'
       : 'Každý nahlas odpoví na svou otázku.'),
@@ -238,8 +237,7 @@ function renderRound() {
     el('ol', { class: 'list list-numbered' }, round.order.map((id) => el('li', {}, `Hráč ${id}`))),
     el('p', { class: 'muted' }, 'Pak se dohodněte, kdo je impostor.'),
     el('button', { class: 'btn btn-primary', onclick: renderResult }, 'Odhalit'),
-  );
-  show('local-round');
+  ] });
 }
 
 function renderResult() {
@@ -250,7 +248,7 @@ function renderResult() {
     ? `Impostor byl hráč ${ids[0]}`
     : `Impostoři byli hráči ${ids.slice(0, -1).join(', ')} a ${ids.at(-1)}`;
 
-  render('local-result',
+  show('local-result', { dir: 'fade', content: [
     el('div', { class: 'card role-impostor' }, el('p', { class: 'result-who' }, who)),
     round.mode === 'words'
       ? el('div', { class: 'card role-crew' },
@@ -262,9 +260,8 @@ function renderResult() {
         el('p', { class: 'muted' }, 'Otázka impostora'),
         el('p', { class: 'role-question' }, round.impostorSecret)),
     el('button', { class: 'btn btn-primary', onclick: nextRound }, 'Další kolo'),
-    el('button', { class: 'btn', onclick: () => show('local-setup') }, 'Nastavení'),
-  );
-  show('local-result');
+    el('button', { class: 'btn', onclick: () => show('local-setup', { dir: 'back' }) }, 'Nastavení'),
+  ] });
 }
 
 // ---------- komponenty ----------

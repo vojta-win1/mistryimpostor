@@ -26,8 +26,8 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - [x] Funguje jen po zobrazení role; tlačítko zůstává jako alternativa.
 
 ## 5. Přechody mezi obrazovkami
-- [ ] Vpřed slide zprava, zpět slide zleva, jinak fade (View Transitions API, fallback CSS animace).
-- [ ] Pozadí a hlavička se při přechodu nehýbou; `prefers-reduced-motion` = bez animace.
+- [x] Vpřed slide zprava, zpět slide zleva, jinak fade (View Transitions API, fallback CSS animace).
+- [x] Pozadí a hlavička se při přechodu nehýbou; `prefers-reduced-motion` = bez animace.
 
 ## 6. Odhalení
 - [ ] „Odhalit" → odpočet 3‑2‑1 přes celou obrazovku.

@@ -140,6 +140,43 @@ body {
   .blob { animation: none; }
 }
 
+/* ---------- přechody obrazovek ---------- */
+
+/* Pozadí se při přechodu nehýbe – má vlastní vrstvu a starý snímek se skryje. */
+.backdrop { view-transition-name: backdrop; }
+::view-transition-group(backdrop),
+::view-transition-new(backdrop) { animation: none; }
+::view-transition-old(backdrop) { display: none; }
+::view-transition-group(backdrop) { z-index: 0; }
+::view-transition-group(root) { z-index: 1; }
+
+::view-transition-old(root) { animation: 180ms ease-in both screen-fade-out; }
+::view-transition-new(root) { animation: 260ms ease-out both screen-fade-in; }
+
+html[data-nav="forward"]::view-transition-old(root) { animation-name: screen-out-left; }
+html[data-nav="forward"]::view-transition-new(root) { animation-name: screen-in-right; }
+html[data-nav="back"]::view-transition-old(root) { animation-name: screen-out-right; }
+html[data-nav="back"]::view-transition-new(root) { animation-name: screen-in-left; }
+
+/* Fallback bez View Transitions API: animuje se jen příchozí obrazovka. */
+.screen.enter-forward { animation: screen-in-right 260ms ease-out both; }
+.screen.enter-back { animation: screen-in-left 260ms ease-out both; }
+.screen.enter-fade { animation: screen-fade-in 260ms ease-out both; }
+
+@keyframes screen-fade-out { to { opacity: 0; } }
+@keyframes screen-fade-in { from { opacity: 0; } }
+@keyframes screen-out-left { to { opacity: 0; transform: translateX(-30%); } }
+@keyframes screen-in-right { from { opacity: 0; transform: translateX(30%); } }
+@keyframes screen-out-right { to { opacity: 0; transform: translateX(30%); } }
+@keyframes screen-in-left { from { opacity: 0; transform: translateX(-30%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+  .screen.enter-forward, .screen.enter-back, .screen.enter-fade { animation: none; }
+}
+
 #app {
   max-width: 480px;
   margin: 0 auto;
