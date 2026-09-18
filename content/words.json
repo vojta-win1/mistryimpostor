@@ -1,1 +1,13 @@
-
+[
+  { "theme": "Příroda a krajina", "words": ["sopka", "ledovec", "vodopád", "jeskyně", "gejzír", "písečná duna", "útes", "bažina", "lavina", "mlha"] },
+  { "theme": "Přístroje a nářadí", "words": ["mikroskop", "dalekohled", "kompas", "rentgen", "metronom", "vodováha", "šroubovák", "svářečka", "žehlička", "kovadlina"] },
+  { "theme": "Dům a stavba", "words": ["hromosvod", "okap", "komín", "sklep", "půda", "výtah", "točité schody", "věšák", "lešení", "zámek u dveří"] },
+  { "theme": "Historie a řemesla", "words": ["mumie", "faraon", "gladiátor", "rytířské brnění", "alchymista", "kominík", "hodinář", "mlynář", "kat", "dráteník"] },
+  { "theme": "Hudba", "words": ["harmonika", "violoncello", "dudy", "xylofon", "gong", "ladička", "varhany", "noty", "dirigent", "bubeník"] },
+  { "theme": "Jídlo a kuchyně", "words": ["kvasnice", "ocet", "křen", "zázvor", "marcipán", "tvaroh", "škvarky", "vývar", "sodovka", "struhadlo"] },
+  { "theme": "Zvířata", "words": ["úl", "mraveniště", "pavučina", "krtinec", "paroží", "žábry", "kokon", "hnízdo", "peří", "akvárium"] },
+  { "theme": "Doprava", "words": ["semafor", "lanovka", "přívoz", "ponorka", "vzducholoď", "kluzák", "rolba", "závora", "tunel", "vrak lodi"] },
+  { "theme": "Škola", "words": ["maturita", "vysvědčení", "tělocvična", "laboratoř", "knihovna", "třídní kniha", "suplování", "přijímačky", "zvonek ve škole", "kabinet"] },
+  { "theme": "Vesmír a přírodní jevy", "words": ["zatmění Slunce", "kometa", "meteorit", "polární záře", "příliv", "ozvěna", "stín", "magnet", "gravitace", "fata morgána"] },
+  { "theme": "Sport a hry", "words": ["kroket", "šipky", "kuželky", "curling", "biatlon", "veslování", "šerm", "skok o tyči", "krasobruslení", "stolní tenis"] }
+]

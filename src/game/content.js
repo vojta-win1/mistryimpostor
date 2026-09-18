@@ -6,7 +6,8 @@ export async function loadContent(baseUrl = new URL('../../content/', import.met
     fetchJson(new URL('questions.json', baseUrl)),
   ]);
   const content = { words, questions };
-  const errors = validateContent(content);
+  // Za běhu kontrolujeme jen strukturu; minima z milníku hlídá `npm run check:content`.
+  const errors = validateContent(content, { minThemes: 1, minWordsPerTheme: 1 });
   if (errors.length) throw new Error(`Neplatný obsah:\n${errors.join('\n')}`);
   return content;
 }

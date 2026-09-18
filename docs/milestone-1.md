@@ -6,8 +6,8 @@ Postupuj v tomto pořadí a po každém kroku commitni.
 
 ## 1. Kostra a obsah
 - [x] Založ strukturu podle `CLAUDE.md`, `index.html` s prázdnými obrazovkami, `styles/main.css` (mobil first, světlé + tmavé téma).
-- [ ] `content/words.json` – přenes témata a slova ze souboru `legacy/impostor-slova.html` (dodám do repa). Minimálně 8 témat po 15 slovech.
-- [ ] `content/questions.json` – přenes dvojice z `legacy/impostor-otazky.html`. Zatím beze změn, přepisujeme později.
+- [ ] `content/words.json` – přenes témata a slova ze souboru `legacy/impostor-slova.html` (dodám do repa). Minimálně 8 témat po 15 slovech. _(zatím 11 témat po 10 slovech)_
+- [x] `content/questions.json` – přenes dvojice z `legacy/impostor-otazky.html`. Zatím beze změn, přepisujeme později.
 - [x] `src/game/engine.js` + testy (vitest): `createGame(settings)`, `dealRound(state, content)`, `nextRoundState`. Pokryj: limit impostorů, historie losu, neopakování obsahu, losování a/b u otázek.
 
 ## 2. Lokální režim
