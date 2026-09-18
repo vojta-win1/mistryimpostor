@@ -5,13 +5,33 @@
   --surface: #ffffff;
   --surface-2: #ece8f5;
   --text: #1c1a24;
-  --muted: #676277;
+  --muted: #625d72;
   --border: #d9d4e6;
-  --accent: #6d3ce6;
-  --accent-text: #ffffff;
-  --danger: #c92a4b;
-  --danger-soft: #fbe3e8;
-  --success: #1e8a5a;
+
+  /* Režim Slova – fialová */
+  --words: #7c3aed;
+  --words-ink: #ffffff;
+  --words-soft: #efe8ff;
+  --words-glow: #b794ff;
+
+  /* Režim Otázky – oranžová */
+  --questions: #c2410c;
+  --questions-ink: #ffffff;
+  --questions-soft: #fff0e3;
+  --questions-glow: #ffa75e;
+
+  /* Impostor – červená */
+  --impostor: #d42a3c;
+  --impostor-ink: #ffffff;
+  --impostor-soft: #fde6e9;
+  --impostor-glow: #ff7a88;
+
+  /* Aktuální režim (přepíná body[data-mode]) */
+  --accent: var(--words);
+  --accent-ink: var(--words-ink);
+  --accent-soft: var(--words-soft);
+  --accent-glow: var(--words-glow);
+  --accent-2-glow: var(--questions-glow);
 
   --radius: 16px;
   --radius-sm: 10px;
@@ -28,15 +48,34 @@
     --surface: #211e2b;
     --surface-2: #2b2738;
     --text: #f0edf7;
-    --muted: #a39db3;
+    --muted: #a8a2b8;
     --border: #3a3549;
-    --accent: #9b76ff;
-    --accent-text: #120d20;
-    --danger: #ff6b86;
-    --danger-soft: #3a1d26;
-    --success: #4fd197;
+
+    --words: #a98bff;
+    --words-ink: #170d33;
+    --words-soft: #2a2242;
+    --words-glow: #6d3ce6;
+
+    --questions: #ff9a4d;
+    --questions-ink: #2b1302;
+    --questions-soft: #3a2616;
+    --questions-glow: #d9580f;
+
+    --impostor: #ff6b78;
+    --impostor-ink: #2d060b;
+    --impostor-soft: #3d1b21;
+    --impostor-glow: #c42236;
+
     --shadow: none;
   }
+}
+
+body[data-mode="questions"] {
+  --accent: var(--questions);
+  --accent-ink: var(--questions-ink);
+  --accent-soft: var(--questions-soft);
+  --accent-glow: var(--questions-glow);
+  --accent-2-glow: var(--words-glow);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -140,13 +179,13 @@ p { margin: 0; }
 .btn-primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--accent-text);
+  color: var(--accent-ink);
 }
 
-.btn-danger {
-  background: var(--danger);
-  border-color: var(--danger);
-  color: #fff;
+.btn-impostor {
+  background: var(--impostor);
+  border-color: var(--impostor);
+  color: var(--impostor-ink);
 }
 
 .btn-back {
@@ -216,7 +255,7 @@ p { margin: 0; }
 .chip[aria-pressed="true"] {
   border-color: var(--accent);
   background: var(--accent);
-  color: var(--accent-text);
+  color: var(--accent-ink);
   font-weight: 600;
 }
 
@@ -262,8 +301,8 @@ p { margin: 0; }
 }
 
 .segmented button[aria-pressed="true"] {
-  background: var(--text);
-  color: var(--bg);
+  background: var(--accent);
+  color: var(--accent-ink);
   box-shadow: var(--shadow);
 }
 
@@ -299,13 +338,22 @@ p { margin: 0; }
   font-weight: 700;
 }
 
-.role-impostor {
-  border-color: var(--danger);
-  background: var(--danger-soft);
+.role-crew {
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
+.role-crew .role-word, .role-crew .role-question { color: var(--accent); }
+
+.role-impostor {
+  border-color: var(--impostor);
+  background: var(--impostor-soft);
+}
+
+.role-impostor .role-word { color: var(--impostor); }
+
 .warning {
-  color: var(--danger);
+  color: var(--impostor);
   font-weight: 700;
 }
 
@@ -313,7 +361,7 @@ p { margin: 0; }
 
 .pass-title { font-size: 1.8rem; }
 
-.result-who { font-size: 1.4rem; font-weight: 800; color: var(--danger); }
+.result-who { font-size: 1.4rem; font-weight: 800; color: var(--impostor); }
 
 .list-numbered { counter-reset: order; }
 .list-numbered > li { counter-increment: order; font-weight: 600; }

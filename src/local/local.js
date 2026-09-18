@@ -56,6 +56,7 @@ async function renderSetup() {
     return;
   }
 
+  document.body.dataset.mode = settings.mode;
   const allThemes = content.words.map((t) => t.theme);
   const selected = new Set((settings.themes ?? allThemes).filter((t) => allThemes.includes(t)));
   const noThemes = settings.mode === 'words' && selected.size === 0;
@@ -124,6 +125,7 @@ async function nextRound() {
 
 function deal(content) {
   game = dealRound(game, content);
+  document.body.dataset.mode = game.round.mode;
   seat = 0;
   renderPass();
 }
@@ -177,13 +179,13 @@ function roleCard(role, mode) {
     );
   }
   if (mode === 'words') {
-    return el('div', { class: 'card' },
+    return el('div', { class: 'card role-crew' },
       el('p', { class: 'muted' }, `Téma: ${role.theme}`),
       el('p', { class: 'role-word' }, role.text),
     );
   }
   // Posádka i impostor, který o tom neví, vidí stejně vypadající kartu.
-  return el('div', { class: 'card' },
+  return el('div', { class: 'card role-crew' },
     el('p', { class: 'muted' }, 'Tvoje otázka'),
     el('p', { class: 'role-question' }, role.text),
   );
@@ -214,10 +216,10 @@ function renderResult() {
   render('local-result',
     el('div', { class: 'card role-impostor' }, el('p', { class: 'result-who' }, who)),
     round.mode === 'words'
-      ? el('div', { class: 'card' },
+      ? el('div', { class: 'card role-crew' },
         el('p', { class: 'muted' }, `Téma: ${round.theme}`),
         el('p', { class: 'role-word' }, round.secret))
-      : el('div', { class: 'card stack' },
+      : el('div', { class: 'card role-crew' },
         el('p', { class: 'muted' }, 'Otázka skupiny'),
         el('p', { class: 'role-question' }, round.secret),
         el('p', { class: 'muted' }, 'Otázka impostora'),

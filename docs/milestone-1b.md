@@ -5,9 +5,9 @@ Cíl: lokální hra na jednom telefonu působí jako hotová appka – barvy pod
 Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, všechno vlastní kód. Mobil first (~380 px), světlé i tmavé téma, `prefers-reduced-motion` respektovat všude, kde se něco hýbe. Commit po každém bodu.
 
 ## 1. Barevný systém
-- [ ] Tokeny v `:root`: slova fialová, otázky oranžová, impostor červená (plná barva, jemné pozadí, text na barvě), zvlášť pro světlé a tmavé téma.
-- [ ] `--accent` se přepíná podle režimu (`body[data-mode]`), impostor má vždy červenou.
-- [ ] Nastavení, karty rolí i výsledek používají tokeny, žádné natvrdo zadané barvy mimo `:root`.
+- [x] Tokeny v `:root`: slova fialová, otázky oranžová, impostor červená (plná barva, jemné pozadí, text na barvě), zvlášť pro světlé a tmavé téma.
+- [x] `--accent` se přepíná podle režimu (`body[data-mode]`), impostor má vždy červenou.
+- [x] Nastavení, karty rolí i výsledek používají tokeny, žádné natvrdo zadané barvy mimo `:root`.
 
 ## 2. Animované pozadí
 - [ ] Rozmazané barevné skvrny (CSS, `filter: blur`) za obsahem, barvy z tokenů aktuálního režimu.
