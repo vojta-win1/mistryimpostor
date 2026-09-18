@@ -59,3 +59,9 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - Mobilní viewport 375×812, světlé i tmavé téma, celé kolo ve Slovech i Otázkách.
 - Reduced motion: nic se nehýbe, hra jde dohrát.
 - Reload uprostřed předávání, během kola a na výsledku.
+
+### Výsledek ověření (2026-09-18)
+- Mobilní viewport 375×812, tmavé i světlé téma: Slova i Otázky prošly celé kolo (držení karty, swipe, časomíra, odpočet, konfety).
+- Reload: uprostřed předávání (vrátí stejného hráče se zakrytou kartou), během kola (běžící časomíra ubíhá dál, pauza drží), během odpočtu (spustí se znovu) a na výsledku (bez konfet).
+- Zvuk: bez gesta se AudioContext nevytvoří, ztlumení drží přes reload.
+- **Neověřeno v prohlížeči:** `prefers-reduced-motion` (náhled ho neumí emulovat – ošetřeno v CSS a v `confetti.js`/`holdcard.js`/`router.js`) a skutečný wake lock (náhled oprávnění zamítá, ověřeno stubem). Obojí vyzkoušet na telefonu.
