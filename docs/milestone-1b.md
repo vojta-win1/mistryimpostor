@@ -15,10 +15,10 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - [x] Text zůstává čitelný (dostatečný kontrast v obou tématech).
 
 ## 3. Karta s rolí – 3D flip a držení
-- [ ] Obrazovka „předání" a role sloučené: karta s rubem „Hráč N – podrž pro zobrazení".
-- [ ] Přidržení (`pointerdown`) kartu otočí 3D flipem, puštění (`pointerup`/`pointercancel`/`pointerleave`) ji hned zakryje.
-- [ ] Ovladatelné i klávesnicí (mezerník/Enter drží kartu), bez kontextového menu a označování textu při long-pressu.
-- [ ] „Předat dál" je aktivní až poté, co hráč roli aspoň jednou viděl.
+- [x] Obrazovka „předání" a role sloučené: karta s rubem „Hráč N – podrž pro zobrazení".
+- [x] Přidržení (`pointerdown`) kartu otočí 3D flipem, puštění (`pointerup`/`pointercancel`/`pointerleave`) ji hned zakryje.
+- [x] Ovladatelné i klávesnicí (mezerník/Enter drží kartu), bez kontextového menu a označování textu při long-pressu.
+- [x] „Předat dál" je aktivní až poté, co hráč roli aspoň jednou viděl.
 
 ## 4. Swipe doleva = předat dál
 - [ ] Tažení karty doleva ji posouvá za prstem; po překročení prahu odletí a jde se na dalšího hráče, jinak se vrátí.

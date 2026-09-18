@@ -2,6 +2,7 @@
 import { createGame, dealRound, nextRoundState, roleFor, LIMITS } from '../game/engine.js';
 import { show, render, onEnter } from '../ui/router.js';
 import { el } from '../ui/dom.js';
+import { holdCard } from '../ui/holdcard.js';
 
 const STORAGE_KEY = 'mistryimpostor.local.settings';
 
@@ -127,40 +128,74 @@ function deal(content) {
   game = dealRound(game, content);
   document.body.dataset.mode = game.round.mode;
   seat = 0;
-  renderPass();
+  renderRole();
 }
 
 function playerId() {
   return game.settings.playerIds[seat];
 }
 
-function renderPass() {
-  render('local-pass',
-    el('p', { class: 'muted' }, `Kolo ${game.round.number}`),
-    el('h2', { class: 'pass-title' }, `Telefon dej hráči ${playerId()}`),
-    el('p', { class: 'muted' }, 'Ostatní se nedívají.'),
-    el('button', { class: 'btn btn-primary', onclick: renderRole }, 'Ukázat'),
-  );
-  show('local-pass');
+function isLastSeat() {
+  return seat === game.settings.playerIds.length - 1;
+}
+
+function passOn() {
+  if (isLastSeat()) return renderRound();
+  seat += 1;
+  renderRole();
 }
 
 function renderRole() {
-  const role = roleFor(game, playerId());
-  const last = seat === game.settings.playerIds.length - 1;
+  const id = playerId();
+  const last = isLastSeat();
+  let viewed = false;
+
+  const passBtn = el('button', { class: 'btn btn-primary', disabled: true, onclick: passOn },
+    last ? 'Začít kolo' : 'Předat dál');
+  const hint = el('p', { class: 'muted small', 'aria-live': 'polite' },
+    'Podrž kartu a uvidíš svou roli. Po puštění se zase zakryje.');
+
+  const card = holdCard({
+    label: `Role hráče ${id}. Podrž pro zobrazení.`,
+    front: cardCover(id),
+    back: roleCard(roleFor(game, id), game.round.mode),
+    onOpen: () => {
+      if (viewed) return;
+      viewed = true;
+      passBtn.disabled = false;
+      hint.textContent = last
+        ? 'Všichni znají svou roli. Můžete začít kolo.'
+        : `Pusť kartu a předej telefon hráči ${game.settings.playerIds[seat + 1]}.`;
+    },
+  });
 
   render('local-role',
-    el('p', { class: 'muted' }, `Hráč ${playerId()}`),
-    roleCard(role, game.round.mode),
-    el('button', {
-      class: 'btn btn-primary',
-      onclick: () => {
-        if (last) return renderRound();
-        seat += 1;
-        renderPass();
-      },
-    }, last ? 'Skrýt a začít kolo' : 'Skrýt a předat dál'),
+    el('div', { class: 'role-head' },
+      el('p', { class: 'muted' }, `Kolo ${game.round.number} · hráč ${seat + 1} z ${game.settings.playerIds.length}`),
+      el('h2', { class: 'pass-title' }, `Telefon má hráč ${id}`),
+      el('p', { class: 'muted' }, 'Ostatní se nedívají.'),
+    ),
+    card,
+    hint,
+    passBtn,
   );
   show('local-role');
+}
+
+function cardCover(id) {
+  return el('div', { class: 'card card-cover' },
+    svgIcon(`<circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3" opacity=".35"/>
+      <path d="M20 40c0-10 5-18 12-18s12 8 12 18M25 44c0-9 3-15 7-15s7 6 7 15M32 36v12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>`),
+    el('p', { class: 'cover-number' }, String(id)),
+    el('p', { class: 'cover-label' }, 'Podrž pro zobrazení'),
+  );
+}
+
+/** Ikona ze statického SVG markupu (jen vlastní konstanty, nikdy data od uživatele). */
+function svgIcon(markup) {
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `<svg class="icon-lg" viewBox="0 0 64 64" aria-hidden="true">${markup}</svg>`;
+  return wrap.firstChild;
 }
 
 function roleCard(role, mode) {
