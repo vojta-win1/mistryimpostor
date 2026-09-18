@@ -6,6 +6,7 @@ import { holdCard } from '../ui/holdcard.js';
 import { confetti } from '../ui/confetti.js';
 import { vibrate, PATTERNS } from '../ui/haptics.js';
 import { sound } from '../ui/sound.js';
+import { keepAwake } from '../ui/wakelock.js';
 
 const STORAGE_KEY = 'mistryimpostor.local.settings';
 
@@ -18,7 +19,11 @@ let seat = 0; // index hráče, který si právě prohlíží roli
 
 export function initLocal(deps) {
   getContent = deps.getContent;
-  onEnter('local-setup', renderSetup);
+  onEnter('local-setup', () => {
+    keepAwake(false);
+    renderSetup();
+  });
+  onEnter('home', () => keepAwake(false));
 }
 
 // ---------- nastavení ----------
@@ -129,6 +134,7 @@ async function nextRound() {
 
 function deal(content) {
   game = dealRound(game, content);
+  keepAwake(true);
   document.body.dataset.mode = game.round.mode;
   seat = 0;
   renderRole();

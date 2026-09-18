@@ -41,8 +41,9 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - [x] `AudioContext` se vytváří až po prvním gestu uživatele.
 
 ## 8. Wake lock
-- [ ] `navigator.wakeLock` drží displej zapnutý od rozdání do návratu do nastavení.
-- [ ] Po návratu do aplikace (`visibilitychange`) se zámek obnoví; bez podpory tiše nic.
+- [x] `navigator.wakeLock` drží displej zapnutý od rozdání do návratu do nastavení.
+- [x] Po návratu do aplikace (`visibilitychange`) se zámek obnoví; bez podpory tiše nic.
+- _Ověřeno se stubem `navigator.wakeLock` (náhled v Claude app oprávnění zamítá) – na skutečném telefonu ještě vyzkoušet._
 
 ## 9. Časomíra
 - [ ] Nastavení „Časomíra na kolo": vypnuto / 30 / 60 / 90 s.
