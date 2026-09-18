@@ -126,7 +126,10 @@ export function ringTimer({ duration, state, onChange }) {
   }
 
   paint();
-  if (running) raf = requestAnimationFrame(loop);
+  if (running) {
+    raf = requestAnimationFrame(loop);
+    emit(); // i automatický start je změna stavu – bez toho by reload začal odznova
+  }
   root.snapshot = () => ({ remainingMs: Math.round(current()), running });
   return root;
 }

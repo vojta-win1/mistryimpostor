@@ -51,9 +51,9 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - [x] Posledních 5 s tiká, na konci zvuk + vibrace + červená.
 
 ## 10. Obnovení rozehrané hry
-- [ ] Stav hry (engine, aktuální hráč, obrazovka, časomíra) se ukládá do `localStorage`.
-- [ ] Po reloadu se hra obnoví na stejné obrazovce; karta je vždy zakrytá.
-- [ ] Uložená hra starší než 12 h se zahodí; poškozená data nerozbijí start.
+- [x] Stav hry (engine, aktuální hráč, obrazovka, časomíra) se ukládá do `localStorage`.
+- [x] Po reloadu se hra obnoví na stejné obrazovce; karta je vždy zakrytá.
+- [x] Uložená hra starší než 12 h se zahodí; poškozená data nerozbijí start.
 
 ## Ověření
 - Mobilní viewport 375×812, světlé i tmavé téma, celé kolo ve Slovech i Otázkách.

@@ -8,6 +8,7 @@ import { vibrate, PATTERNS } from '../ui/haptics.js';
 import { sound } from '../ui/sound.js';
 import { keepAwake } from '../ui/wakelock.js';
 import { ringTimer } from '../ui/timer.js';
+import { saveGame, loadGame } from './persist.js';
 
 const STORAGE_KEY = 'mistryimpostor.local.settings';
 
@@ -18,15 +19,48 @@ let getContent;
 let settings = loadSettings();
 let game = null;
 let seat = 0; // index hráče, který si právě prohlíží roli
-let timerState = null; // { remainingMs, running } časomíry aktuálního kola
+let timerState = null; // { remainingMs, running, at } časomíry aktuálního kola; at = Date.now() při změně
 
 export function initLocal(deps) {
   getContent = deps.getContent;
   onEnter('local-setup', () => {
-    keepAwake(false);
+    leaveGame();
     renderSetup();
   });
-  onEnter('home', () => keepAwake(false));
+  onEnter('home', leaveGame);
+}
+
+/**
+ * Obnoví rozehranou hru po reloadu.
+ * @param {object} [opts]
+ * @param {boolean} [opts.navigate]  false = jen načíst historii, obrazovku neměnit
+ * @returns {boolean} true, pokud se zobrazila obrazovka hry
+ */
+export function restoreLocal({ navigate = true } = {}) {
+  const saved = loadGame();
+  if (!saved) return false;
+  game = saved.game;
+  seat = saved.seat ?? 0;
+  timerState = saved.timer ?? null;
+  if (!navigate || !saved.screen) return false;
+
+  document.body.dataset.mode = game.round.mode;
+  keepAwake(true);
+  // Karta s rolí je po obnovení vždy zakrytá – vzniká nová.
+  if (saved.screen === 'role') renderRole('fade');
+  else if (saved.screen === 'round') renderRound('fade');
+  else if (saved.screen === 'countdown') renderCountdown();
+  else renderResult();
+  return true;
+}
+
+function leaveGame() {
+  keepAwake(false);
+  if (game) persist(null); // historie losu zůstává, obrazovka se neobnovuje
+}
+
+function persist(screen) {
+  saveGame({ game, seat, screen, timer: timerState });
 }
 
 // ---------- nastavení ----------
@@ -160,6 +194,7 @@ function passOn(dir = 'forward') {
 }
 
 function renderRole(dir = 'forward') {
+  persist('role');
   const id = playerId();
   const last = isLastSeat();
   let viewed = false;
@@ -244,11 +279,15 @@ function roleCard(role, mode) {
 }
 
 function renderRound(dir = 'forward') {
+  persist('round');
   const { round } = game;
   const timer = settings.timer > 0 && ringTimer({
     duration: settings.timer,
-    state: timerState,
-    onChange: (state) => { timerState = state; },
+    state: timerNow(),
+    onChange: (state) => {
+      timerState = { ...state, at: Date.now() };
+      persist('round');
+    },
   });
   show('local-round', { dir, content: [
     timer,
@@ -262,9 +301,17 @@ function renderRound(dir = 'forward') {
   ] });
 }
 
+/** Stav časomíry přepočtený na teď (běžící čas mezitím ubíhal, i během reloadu). */
+function timerNow() {
+  if (!timerState) return null;
+  const { remainingMs, running, at } = timerState;
+  return { remainingMs: running ? remainingMs - (Date.now() - at) : remainingMs, running };
+}
+
 const COUNTDOWN_FROM = 3;
 
 function renderCountdown() {
+  persist('countdown');
   let n = COUNTDOWN_FROM;
   const slot = el('div', { class: 'countdown', 'aria-live': 'assertive' });
   const tick = () => {
@@ -290,6 +337,7 @@ function renderCountdown() {
 function renderResult({ celebrate = false } = {}) {
   const { round } = game;
   game = { ...game, round: { ...round, revealed: true } };
+  persist('result');
   const ids = round.impostorIds.slice().sort((a, b) => a - b);
   const single = ids.length === 1;
   const names = single ? `Hráč ${ids[0]}` : `Hráči ${ids.slice(0, -1).join(', ')} a ${ids.at(-1)}`;

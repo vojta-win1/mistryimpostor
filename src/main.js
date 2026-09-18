@@ -1,7 +1,7 @@
 // Bootstrap aplikace.
 import { show } from './ui/router.js';
 import { loadContent } from './game/content.js';
-import { initLocal } from './local/local.js';
+import { initLocal, restoreLocal } from './local/local.js';
 import { sound, isMuted, setMuted, onMutedChange } from './ui/sound.js';
 
 const contentPromise = loadContent();
@@ -32,4 +32,9 @@ document.addEventListener('click', (e) => {
 initLocal({ getContent: () => contentPromise });
 
 const params = new URLSearchParams(location.search);
-show(params.has('room') ? 'online-join' : 'home');
+if (params.has('room')) {
+  restoreLocal({ navigate: false });
+  show('online-join');
+} else if (!restoreLocal()) {
+  show('home');
+}
