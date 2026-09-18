@@ -10,9 +10,9 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - [x] Nastavení, karty rolí i výsledek používají tokeny, žádné natvrdo zadané barvy mimo `:root`.
 
 ## 2. Animované pozadí
-- [ ] Rozmazané barevné skvrny (CSS, `filter: blur`) za obsahem, barvy z tokenů aktuálního režimu.
-- [ ] Pomalý pohyb přes `@keyframes`; při `prefers-reduced-motion: reduce` stojí.
-- [ ] Text zůstává čitelný (dostatečný kontrast v obou tématech).
+- [x] Rozmazané barevné skvrny (CSS radiální gradienty – vypadají jako `filter: blur`, ale jsou na mobilu levnější) za obsahem, barvy z tokenů aktuálního režimu.
+- [x] Pomalý pohyb přes `@keyframes`; při `prefers-reduced-motion: reduce` stojí.
+- [x] Text zůstává čitelný (dostatečný kontrast v obou tématech).
 
 ## 3. Karta s rolí – 3D flip a držení
 - [ ] Obrazovka „předání" a role sloučené: karta s rubem „Hráč N – podrž pro zobrazení".
