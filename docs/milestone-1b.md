@@ -21,9 +21,9 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - [x] „Předat dál" je aktivní až poté, co hráč roli aspoň jednou viděl.
 
 ## 4. Swipe doleva = předat dál
-- [ ] Tažení karty doleva ji posouvá za prstem; po překročení prahu odletí a jde se na dalšího hráče, jinak se vrátí.
-- [ ] Během tažení je karta zakrytá (další hráč nic nezahlédne).
-- [ ] Funguje jen po zobrazení role; tlačítko zůstává jako alternativa.
+- [x] Tažení karty doleva ji posouvá za prstem; po překročení prahu odletí a jde se na dalšího hráče, jinak se vrátí.
+- [x] Během tažení je karta zakrytá (další hráč nic nezahlédne).
+- [x] Funguje jen po zobrazení role; tlačítko zůstává jako alternativa.
 
 ## 5. Přechody mezi obrazovkami
 - [ ] Vpřed slide zprava, zpět slide zleva, jinak fade (View Transitions API, fallback CSS animace).

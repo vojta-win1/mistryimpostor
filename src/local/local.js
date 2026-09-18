@@ -159,13 +159,15 @@ function renderRole() {
     label: `Role hráče ${id}. Podrž pro zobrazení.`,
     front: cardCover(id),
     back: roleCard(roleFor(game, id), game.round.mode),
+    canSwipe: () => viewed,
+    onSwipeLeft: passOn,
     onOpen: () => {
       if (viewed) return;
       viewed = true;
       passBtn.disabled = false;
       hint.textContent = last
-        ? 'Všichni znají svou roli. Můžete začít kolo.'
-        : `Pusť kartu a předej telefon hráči ${game.settings.playerIds[seat + 1]}.`;
+        ? 'Všichni znají svou roli. Švihni kartou doleva a začněte kolo.'
+        : `Pusť kartu, švihni jí doleva a předej telefon hráči ${game.settings.playerIds[seat + 1]}.`;
     },
   });
 
