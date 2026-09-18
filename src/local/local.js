@@ -7,15 +7,18 @@ import { confetti } from '../ui/confetti.js';
 import { vibrate, PATTERNS } from '../ui/haptics.js';
 import { sound } from '../ui/sound.js';
 import { keepAwake } from '../ui/wakelock.js';
+import { ringTimer } from '../ui/timer.js';
 
 const STORAGE_KEY = 'mistryimpostor.local.settings';
 
-const DEFAULT_SETTINGS = { players: 4, impostors: 1, mode: 'words', impostorKnows: true, themes: null };
+const DEFAULT_SETTINGS = { players: 4, impostors: 1, mode: 'words', impostorKnows: true, themes: null, timer: 0 };
+const TIMER_OPTIONS = [[0, 'Vypnuto'], [30, '30 s'], [60, '60 s'], [90, '90 s']];
 
 let getContent;
 let settings = loadSettings();
 let game = null;
 let seat = 0; // index hráče, který si právě prohlíží roli
+let timerState = null; // { remainingMs, running } časomíry aktuálního kola
 
 export function initLocal(deps) {
   getContent = deps.getContent;
@@ -86,6 +89,7 @@ async function renderSetup() {
       'Když je vypnuto, impostor odpovídá poctivě a neví, že má jinou otázku.',
     ),
     settings.mode === 'words' && themePicker(allThemes, selected),
+    field('Časomíra na kolo', segmented(TIMER_OPTIONS, settings.timer, (timer) => update({ timer }))),
     el('button', {
       class: 'btn btn-primary',
       disabled: noThemes,
@@ -135,6 +139,7 @@ async function nextRound() {
 function deal(content) {
   game = dealRound(game, content);
   keepAwake(true);
+  timerState = null;
   document.body.dataset.mode = game.round.mode;
   seat = 0;
   renderRole();
@@ -240,7 +245,13 @@ function roleCard(role, mode) {
 
 function renderRound(dir = 'forward') {
   const { round } = game;
+  const timer = settings.timer > 0 && ringTimer({
+    duration: settings.timer,
+    state: timerState,
+    onChange: (state) => { timerState = state; },
+  });
   show('local-round', { dir, content: [
+    timer,
     el('p', {}, round.mode === 'words'
       ? 'Každý řekne jedno slovo, které souvisí s tajným slovem.'
       : 'Každý nahlas odpoví na svou otázku.'),

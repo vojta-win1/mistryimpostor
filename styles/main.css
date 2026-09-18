@@ -564,6 +564,83 @@ p { margin: 0; }
   .flip, .flip-inner { transition: none; }
 }
 
+/* ---------- časomíra ---------- */
+
+.timer {
+  --timer-color: var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.timer.is-warning, .timer.is-done { --timer-color: var(--impostor); }
+
+.timer-face {
+  appearance: none;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 168px;
+  height: 168px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.timer-face:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+
+.timer-face svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-track { fill: color-mix(in srgb, var(--surface) 70%, transparent); stroke: var(--surface-2); stroke-width: 10; }
+
+.timer-progress {
+  fill: none;
+  stroke: var(--timer-color);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke 300ms ease;
+}
+
+.timer-text { position: relative; display: flex; flex-direction: column; align-items: center; }
+
+.timer-value {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--timer-color);
+}
+
+.timer.is-done .timer-value { font-size: 2.2rem; }
+
+.timer-status { font-size: 0.8rem; color: var(--muted); }
+
+.timer.is-paused .timer-face { opacity: 0.75; }
+.timer.is-warning .timer-face { animation: timer-pulse 1s ease-in-out infinite; }
+.timer.is-done .timer-face { animation: timer-shake 400ms ease-in-out 2; }
+
+@keyframes timer-pulse { 50% { transform: scale(1.04); } }
+@keyframes timer-shake {
+  25% { transform: translateX(-6px) rotate(-2deg); }
+  75% { transform: translateX(6px) rotate(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timer.is-warning .timer-face, .timer.is-done .timer-face { animation: none; }
+}
+
 /* ---------- odhalení ---------- */
 
 .countdown-label {

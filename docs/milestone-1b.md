@@ -46,9 +46,9 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - _Ověřeno se stubem `navigator.wakeLock` (náhled v Claude app oprávnění zamítá) – na skutečném telefonu ještě vyzkoušet._
 
 ## 9. Časomíra
-- [ ] Nastavení „Časomíra na kolo": vypnuto / 30 / 60 / 90 s.
-- [ ] Kruhová SVG časomíra na obrazovce kola, klepnutím pauza/pokračování, tlačítko znovu.
-- [ ] Posledních 5 s tiká, na konci zvuk + vibrace + červená.
+- [x] Nastavení „Časomíra na kolo": vypnuto / 30 / 60 / 90 s.
+- [x] Kruhová SVG časomíra na obrazovce kola, klepnutím pauza/pokračování, tlačítko znovu.
+- [x] Posledních 5 s tiká, na konci zvuk + vibrace + červená.
 
 ## 10. Obnovení rozehrané hry
 - [ ] Stav hry (engine, aktuální hráč, obrazovka, časomíra) se ukládá do `localStorage`.
