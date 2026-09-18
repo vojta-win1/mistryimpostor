@@ -3,6 +3,8 @@ import { createGame, dealRound, nextRoundState, roleFor, LIMITS } from '../game/
 import { show, render, onEnter } from '../ui/router.js';
 import { el } from '../ui/dom.js';
 import { holdCard } from '../ui/holdcard.js';
+import { confetti } from '../ui/confetti.js';
+import { vibrate, PATTERNS } from '../ui/haptics.js';
 
 const STORAGE_KEY = 'mistryimpostor.local.settings';
 
@@ -236,20 +238,46 @@ function renderRound(dir = 'forward') {
     el('p', { class: 'field-label' }, 'Pořadí'),
     el('ol', { class: 'list list-numbered' }, round.order.map((id) => el('li', {}, `Hráč ${id}`))),
     el('p', { class: 'muted' }, 'Pak se dohodněte, kdo je impostor.'),
-    el('button', { class: 'btn btn-primary', onclick: renderResult }, 'Odhalit'),
+    el('button', { class: 'btn btn-primary', onclick: renderCountdown }, 'Odhalit'),
   ] });
 }
 
-function renderResult() {
+const COUNTDOWN_FROM = 3;
+
+function renderCountdown() {
+  let n = COUNTDOWN_FROM;
+  const slot = el('div', { class: 'countdown', 'aria-live': 'assertive' });
+  const tick = () => {
+    slot.replaceChildren(el('span', { class: 'countdown-num' }, String(n)));
+    vibrate(PATTERNS.tick);
+  };
+
+  show('local-countdown', { dir: 'fade', content: [
+    el('p', { class: 'countdown-label' }, game.round.impostorIds.length === 1 ? 'Kdo je impostor?' : 'Kdo jsou impostoři?'),
+    slot,
+  ] });
+  tick();
+
+  const timer = setInterval(() => {
+    n -= 1;
+    if (n > 0) return tick();
+    clearInterval(timer);
+    renderResult({ celebrate: true });
+  }, 1000);
+}
+
+function renderResult({ celebrate = false } = {}) {
   const { round } = game;
   game = { ...game, round: { ...round, revealed: true } };
   const ids = round.impostorIds.slice().sort((a, b) => a - b);
-  const who = ids.length === 1
-    ? `Impostor byl hráč ${ids[0]}`
-    : `Impostoři byli hráči ${ids.slice(0, -1).join(', ')} a ${ids.at(-1)}`;
+  const single = ids.length === 1;
+  const names = single ? `Hráč ${ids[0]}` : `Hráči ${ids.slice(0, -1).join(', ')} a ${ids.at(-1)}`;
 
   show('local-result', { dir: 'fade', content: [
-    el('div', { class: 'card role-impostor' }, el('p', { class: 'result-who' }, who)),
+    el('div', { class: 'card result-hero' },
+      el('p', { class: 'result-kicker' }, single ? 'Impostorem byl' : 'Impostory byli'),
+      el('p', { class: 'result-who' }, names),
+    ),
     round.mode === 'words'
       ? el('div', { class: 'card role-crew' },
         el('p', { class: 'muted' }, `Téma: ${round.theme}`),
@@ -257,11 +285,16 @@ function renderResult() {
       : el('div', { class: 'card role-crew' },
         el('p', { class: 'muted' }, 'Otázka skupiny'),
         el('p', { class: 'role-question' }, round.secret),
-        el('p', { class: 'muted' }, 'Otázka impostora'),
-        el('p', { class: 'role-question' }, round.impostorSecret)),
+        el('p', { class: 'muted result-impostor-label' }, 'Otázka impostora'),
+        el('p', { class: 'role-question result-impostor-question' }, round.impostorSecret)),
     el('button', { class: 'btn btn-primary', onclick: nextRound }, 'Další kolo'),
     el('button', { class: 'btn', onclick: () => show('local-setup', { dir: 'back' }) }, 'Nastavení'),
   ] });
+
+  if (celebrate) {
+    vibrate(PATTERNS.reveal);
+    setTimeout(() => confetti(), 150); // až po přechodu obrazovky
+  }
 }
 
 // ---------- komponenty ----------

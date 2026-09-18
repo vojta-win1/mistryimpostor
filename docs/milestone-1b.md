@@ -30,10 +30,10 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - [x] Pozadí a hlavička se při přechodu nehýbou; `prefers-reduced-motion` = bez animace.
 
 ## 6. Odhalení
-- [ ] „Odhalit" → odpočet 3‑2‑1 přes celou obrazovku.
-- [ ] Výsledek s impostorem v červené a konfetami (vlastní `<canvas>` částice).
-- [ ] Vibrace přes `navigator.vibrate` (kde je podporované).
-- [ ] Reduced motion: odpočet bez animací, bez konfet.
+- [x] „Odhalit" → odpočet 3‑2‑1 přes celou obrazovku.
+- [x] Výsledek s impostorem v červené a konfetami (vlastní `<canvas>` částice).
+- [x] Vibrace přes `navigator.vibrate` (kde je podporované).
+- [x] Reduced motion: odpočet bez animací, bez konfet.
 
 ## 7. Zvukové efekty
 - [ ] Web Audio API, zvuky syntetizované v kódu (klik, otočení karty, swipe, tik odpočtu, fanfára odhalení, konec časomíry).

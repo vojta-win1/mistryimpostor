@@ -523,7 +523,82 @@ p { margin: 0; }
   .flip, .flip-inner { transition: none; }
 }
 
-.result-who { font-size: 1.4rem; font-weight: 800; color: var(--impostor); }
+/* ---------- odhalení ---------- */
+
+.countdown-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.countdown {
+  display: grid;
+  place-items: center;
+  height: 12rem;
+}
+
+.countdown-num {
+  font-size: 10rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--impostor);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 40px color-mix(in srgb, var(--impostor-glow) 60%, transparent);
+  animation: count-pop 1s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+@keyframes count-pop {
+  0%   { opacity: 0; transform: scale(2); }
+  18%  { opacity: 1; transform: scale(1); }
+  75%  { opacity: 1; transform: scale(0.95); }
+  100% { opacity: 0; transform: scale(0.6); }
+}
+
+.result-hero {
+  align-items: center;
+  padding: 28px 20px;
+  text-align: center;
+  border: 2px solid var(--impostor);
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--impostor-glow) 45%, transparent), transparent 70%),
+    var(--impostor-soft);
+  animation: hero-in 600ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+.result-kicker {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.85rem;
+  color: var(--impostor);
+}
+
+.result-who {
+  font-size: clamp(2.2rem, 12vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.05;
+  color: var(--impostor);
+}
+
+.result-impostor-label { color: var(--impostor); font-weight: 600; }
+.role-crew .result-impostor-question { color: var(--impostor); }
+
+@keyframes hero-in {
+  from { opacity: 0; transform: scale(0.7) rotate(-3deg); }
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown-num, .result-hero { animation: none; }
+}
 
 .list-numbered { counter-reset: order; }
 .list-numbered > li { counter-increment: order; font-weight: 600; }
