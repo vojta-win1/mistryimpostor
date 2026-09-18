@@ -36,9 +36,9 @@ Omezení: jen CSS/SVG (žádné rastrové obrázky), žádné nové knihovny, v�
 - [x] Reduced motion: odpočet bez animací, bez konfet.
 
 ## 7. Zvukové efekty
-- [ ] Web Audio API, zvuky syntetizované v kódu (klik, otočení karty, swipe, tik odpočtu, fanfára odhalení, konec časomíry).
-- [ ] Tlačítko ztlumit v hlavičce (SVG ikona), stav v `localStorage`.
-- [ ] `AudioContext` se vytváří až po prvním gestu uživatele.
+- [x] Web Audio API, zvuky syntetizované v kódu (klik, otočení karty, swipe, tik odpočtu, fanfára odhalení, konec časomíry).
+- [x] Tlačítko ztlumit v hlavičce (SVG ikona), stav v `localStorage`.
+- [x] `AudioContext` se vytváří až po prvním gestu uživatele.
 
 ## 8. Wake lock
 - [ ] `navigator.wakeLock` drží displej zapnutý od rozdání do návratu do nastavení.

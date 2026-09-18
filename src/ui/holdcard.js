@@ -12,8 +12,9 @@ const SWIPE_START = 12; // px, od kdy je pohyb swipe a ne držení
  * @param {() => void} [opts.onClose]
  * @param {() => boolean} [opts.canSwipe]  smí se kartou teď švihnout doleva?
  * @param {() => void} [opts.onSwipeLeft]  karta odletěla doleva
+ * @param {() => void} [opts.onSwipeStart]  karta právě začala odlétat
  */
-export function holdCard({ front, back, label, onOpen, onClose, canSwipe, onSwipeLeft }) {
+export function holdCard({ front, back, label, onOpen, onClose, canSwipe, onSwipeLeft, onSwipeStart }) {
   const inner = el('div', { class: 'flip-inner' },
     el('div', { class: 'flip-face flip-front' }, front),
     el('div', { class: 'flip-face flip-back', 'aria-hidden': 'true' }, back),
@@ -42,7 +43,9 @@ export function holdCard({ front, back, label, onOpen, onClose, canSwipe, onSwip
   let flying = false;
 
   card.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0 || drag || flying) return;
+    if (e.button !== 0 || flying) return;
+    if (drag && drag.id === e.pointerId) return;
+    // Nový dotyk přebírá kartu i po ztraceném pointerup předchozího.
     try {
       card.setPointerCapture(e.pointerId);
     } catch {
@@ -80,6 +83,7 @@ export function holdCard({ front, back, label, onOpen, onClose, canSwipe, onSwip
 
   function flyOut() {
     flying = true;
+    onSwipeStart?.();
     let called = false;
     const done = () => {
       if (called) return;
@@ -118,6 +122,10 @@ export function holdCard({ front, back, label, onOpen, onClose, canSwipe, onSwip
   };
   document.addEventListener('visibilitychange', hide, { signal: listeners.signal });
   window.addEventListener('blur', hide, { signal: listeners.signal });
+  // Pojistka: puštění kdekoli v okně kartu zakryje, i kdyby se pointerup ke kartě nedostal.
+  for (const type of ['pointerup', 'pointercancel']) {
+    window.addEventListener(type, (e) => (card.isConnected ? endDrag(e) : listeners.abort()), { signal: listeners.signal });
+  }
 
   card.close = hide;
   return card;

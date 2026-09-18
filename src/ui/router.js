@@ -41,7 +41,10 @@ export function show(name, { dir = 'forward', content } = {}) {
     swap();
   } else if (document.startViewTransition) {
     document.documentElement.dataset.nav = dir;
-    document.startViewTransition(swap);
+    const vt = document.startViewTransition(swap);
+    // Přerušený přechod (reload, skrytá karta prohlížeče) není chyba – obsah se prohodí tak jako tak.
+    vt.ready.catch(() => {});
+    vt.finished.catch(() => {});
   } else {
     swap();
     screen.classList.remove('enter-forward', 'enter-back', 'enter-fade');

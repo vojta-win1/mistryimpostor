@@ -5,6 +5,7 @@ import { el } from '../ui/dom.js';
 import { holdCard } from '../ui/holdcard.js';
 import { confetti } from '../ui/confetti.js';
 import { vibrate, PATTERNS } from '../ui/haptics.js';
+import { sound } from '../ui/sound.js';
 
 const STORAGE_KEY = 'mistryimpostor.local.settings';
 
@@ -163,7 +164,9 @@ function renderRole(dir = 'forward') {
     back: roleCard(roleFor(game, id), game.round.mode),
     canSwipe: () => viewed,
     onSwipeLeft: () => passOn('fade'), // karta už odletěla, obrazovka jen prolne
+    onSwipeStart: sound.swipe,
     onOpen: () => {
+      sound.flip();
       if (viewed) return;
       viewed = true;
       passBtn.disabled = false;
@@ -250,6 +253,7 @@ function renderCountdown() {
   const tick = () => {
     slot.replaceChildren(el('span', { class: 'countdown-num' }, String(n)));
     vibrate(PATTERNS.tick);
+    sound.tick();
   };
 
   show('local-countdown', { dir: 'fade', content: [
@@ -293,6 +297,7 @@ function renderResult({ celebrate = false } = {}) {
 
   if (celebrate) {
     vibrate(PATTERNS.reveal);
+    sound.reveal();
     setTimeout(() => confetti(), 150); // až po přechodu obrazovky
   }
 }
