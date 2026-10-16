@@ -24,7 +24,7 @@ muteBtn.addEventListener('click', () => {
 // Klik na běžné ovládací prvky (karta s rolí má vlastní zvuky).
 document.addEventListener('click', (e) => {
   if (e.target.closest('#mute')) return;
-  if (e.target.closest('.btn, .btn-back, .btn-link, .chip, .segmented button, .toggle input')) sound.tap();
+  if (e.target.closest('.btn, .btn-back, .btn-link, .chip, .segmented button, .mode-tile, .toggle input')) sound.tap();
 });
 
 // ---------- start ----------

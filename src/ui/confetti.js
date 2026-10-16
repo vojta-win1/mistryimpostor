@@ -94,7 +94,7 @@ export function confetti({ colors, count = 160, duration = 3800 } = {}) {
 
 function tokenColors() {
   const css = getComputedStyle(document.body);
-  return ['--impostor', '--impostor-glow', '--accent', '--accent-glow', '--words', '--questions']
+  return ['--impostor', '--impostor-hi', '--accent', '--accent-hi', '--words', '--questions']
     .map((name) => css.getPropertyValue(name).trim())
     .filter(Boolean);
 }

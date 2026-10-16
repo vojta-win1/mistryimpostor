@@ -109,13 +109,12 @@ async function renderSetup() {
 
   render(
     'local-setup',
-    field('Počet hráčů', stepper(settings.players, LIMITS.minPlayers, LIMITS.maxPlayers, (players) => update({ players }))),
-    field('Počet impostorů', stepper(settings.impostors, LIMITS.minImpostors, maxImpostors(settings.players), (impostors) => update({ impostors }))),
-    field('Režim', segmented(
-      [['words', 'Slova'], ['questions', 'Otázky']],
-      settings.mode,
-      (mode) => update({ mode }),
-    )),
+    el('div', { class: 'table-group' },
+      countRow('Hráči', stepper(settings.players, LIMITS.minPlayers, LIMITS.maxPlayers, (players) => update({ players }))),
+      countRow('Impostoři', stepper(settings.impostors, LIMITS.minImpostors, maxImpostors(settings.players), (impostors) => update({ impostors }))),
+      playerStrip(settings.players, settings.impostors),
+    ),
+    field('Režim', modeTiles(settings.mode, (mode) => update({ mode }))),
     settings.mode === 'questions' && toggle(
       'Impostor ví, že jím je',
       settings.impostorKnows,
@@ -124,12 +123,14 @@ async function renderSetup() {
     ),
     settings.mode === 'words' && themePicker(allThemes, selected),
     field('Časomíra na kolo', segmented(TIMER_OPTIONS, settings.timer, (timer) => update({ timer }))),
-    el('button', {
-      class: 'btn btn-primary',
-      disabled: noThemes,
-      onclick: startGame,
-    }, 'Rozdat role'),
-    noThemes && el('p', { class: 'warning' }, 'Vyber aspoň jedno téma.'),
+    el('div', { class: 'sticky-cta' },
+      noThemes && el('p', { class: 'warning' }, 'Vyber aspoň jedno téma.'),
+      el('button', {
+        class: 'btn btn-primary btn-lg',
+        disabled: noThemes,
+        onclick: startGame,
+      }, 'Rozdat role'),
+    ),
   );
 }
 
@@ -207,7 +208,7 @@ function renderRole(dir = 'forward') {
   const card = holdCard({
     label: `Role hráče ${id}. Podrž pro zobrazení.`,
     front: cardCover(id),
-    back: roleCard(roleFor(game, id), game.round.mode),
+    back: roleCard(roleFor(game, id), game.round.mode, id),
     canSwipe: () => viewed,
     onSwipeLeft: () => passOn('fade'), // karta už odletěla, obrazovka jen prolne
     onSwipeStart: sound.swipe,
@@ -224,7 +225,10 @@ function renderRole(dir = 'forward') {
 
   show('local-role', { dir, content: [
     el('div', { class: 'role-head' },
-      el('p', { class: 'muted' }, `Kolo ${game.round.number} · hráč ${seat + 1} z ${game.settings.playerIds.length}`),
+      el('div', { class: 'round-meta' },
+        el('span', { class: 'round-badge' }, `Kolo ${game.round.number}`),
+        pips(seat, game.settings.playerIds.length),
+      ),
       el('h2', { class: 'pass-title' }, `Telefon má hráč ${id}`),
       el('p', { class: 'muted' }, 'Ostatní se nedívají.'),
     ),
@@ -234,46 +238,70 @@ function renderRole(dir = 'forward') {
   ] });
 }
 
+function pips(current, total) {
+  return el('ol', { class: 'pips', 'aria-label': `Hráč ${current + 1} z ${total}` },
+    Array.from({ length: total }, (_, i) => el('li', {
+      class: i < current ? 'is-done' : i === current ? 'is-current' : null,
+    })));
+}
+
+/** Rub hrací karty – vzor v barvě režimu, uprostřed číslo hráče. */
 function cardCover(id) {
-  return el('div', { class: 'card card-cover' },
-    svgIcon(`<circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3" opacity=".35"/>
-      <path d="M20 40c0-10 5-18 12-18s12 8 12 18M25 44c0-9 3-15 7-15s7 6 7 15M32 36v12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>`),
-    el('p', { class: 'cover-number' }, String(id)),
-    el('p', { class: 'cover-label' }, 'Podrž pro zobrazení'),
+  return el('div', { class: 'pcard pcard-back' },
+    el('div', { class: 'pcard-frame' },
+      el('div', { class: 'pcard-medal' },
+        el('span', { class: 'pcard-num' }, String(id)),
+      ),
+      el('p', { class: 'pcard-hint' }, 'Podrž pro zobrazení'),
+    ),
   );
 }
 
-/** Ikona ze statického SVG markupu (jen vlastní konstanty, nikdy data od uživatele). */
-function svgIcon(markup) {
+const MASK_SVG = `<path fill="currentColor" fill-rule="evenodd" d="M4 9C14 2 50 2 60 9c0 15-6 25-17 25-6 0-8-6-11-6s-5 6-11 6C10 34 4 24 4 9zm11 9.5c0 3 3 5 6.5 5s6.5-2 6.5-5-3-4.5-6.5-4.5S15 15.5 15 18.5zm21 0c0 3 3 5 6.5 5s6.5-2 6.5-5-3-4.5-6.5-4.5S36 15.5 36 18.5z"/>`;
+
+/** Maska impostora ze statického SVG markupu (jen vlastní konstanta, nikdy data od uživatele). */
+function maskIcon(cls = 'role-mask') {
   const wrap = document.createElement('div');
-  wrap.innerHTML = `<svg class="icon-lg" viewBox="0 0 64 64" aria-hidden="true">${markup}</svg>`;
+  wrap.innerHTML = `<svg class="${cls}" viewBox="0 0 64 38" aria-hidden="true">${MASK_SVG}</svg>`;
   return wrap.firstChild;
 }
 
-function roleCard(role, mode) {
+/** Líc hrací karty s rohovými indexy (číslo hráče). */
+function cardFace(kind, id, ...body) {
+  return el('div', { class: `pcard pcard-face pcard--${kind}` },
+    el('span', { class: 'pcard-corner pcard-corner--tl', 'aria-hidden': 'true' }, String(id)),
+    el('div', { class: 'pcard-body' }, ...body),
+    el('span', { class: 'pcard-corner pcard-corner--br', 'aria-hidden': 'true' }, String(id)),
+  );
+}
+
+function roleCard(role, mode, id) {
   if (role.kind === 'impostor' && mode === 'words') {
-    return el('div', { class: 'card role-impostor' },
-      el('p', { class: 'warning' }, 'Jsi impostor!'),
-      el('p', { class: 'muted' }, 'Téma'),
-      el('p', { class: 'role-word' }, role.theme),
-      el('p', { class: 'muted' }, 'Slovo neznáš. Poslouchej ostatní a nenech se odhalit.'),
+    return cardFace('impostor', id,
+      maskIcon(),
+      el('p', { class: 'role-title' }, 'Jsi impostor'),
+      el('p', { class: 'role-label' }, 'Téma'),
+      el('p', { class: 'role-theme' }, role.theme),
+      el('p', { class: 'role-note' }, 'Slovo neznáš. Poslouchej ostatní a nenech se odhalit.'),
     );
   }
   if (role.kind === 'impostor') {
-    return el('div', { class: 'card role-impostor' },
-      el('p', { class: 'warning' }, 'Jsi impostor! Ostatní mají jinou otázku.'),
+    return cardFace('impostor', id,
+      maskIcon(),
+      el('p', { class: 'role-title' }, 'Jsi impostor'),
+      el('p', { class: 'role-note' }, 'Ostatní mají jinou otázku.'),
       el('p', { class: 'role-question' }, role.text),
     );
   }
   if (mode === 'words') {
-    return el('div', { class: 'card role-crew' },
-      el('p', { class: 'muted' }, `Téma: ${role.theme}`),
+    return cardFace('crew', id,
+      el('p', { class: 'role-label' }, role.theme),
       el('p', { class: 'role-word' }, role.text),
     );
   }
   // Posádka i impostor, který o tom neví, vidí stejně vypadající kartu.
-  return el('div', { class: 'card role-crew' },
-    el('p', { class: 'muted' }, 'Tvoje otázka'),
+  return cardFace('crew', id,
+    el('p', { class: 'role-label' }, 'Tvoje otázka'),
     el('p', { class: 'role-question' }, role.text),
   );
 }
@@ -291,13 +319,16 @@ function renderRound(dir = 'forward') {
   });
   show('local-round', { dir, content: [
     timer,
-    el('p', {}, round.mode === 'words'
+    el('p', { class: 'round-intro' }, round.mode === 'words'
       ? 'Každý řekne jedno slovo, které souvisí s tajným slovem.'
       : 'Každý nahlas odpoví na svou otázku.'),
-    el('p', { class: 'field-label' }, 'Pořadí'),
-    el('ol', { class: 'list list-numbered' }, round.order.map((id) => el('li', {}, `Hráč ${id}`))),
+    el('div', { class: 'field' },
+      el('span', { class: 'field-label' }, 'Pořadí'),
+      el('ol', { class: 'order' }, round.order.map((id) => el('li', { class: 'mini-card' },
+        el('span', { class: 'sr-only' }, 'Hráč '), String(id)))),
+    ),
     el('p', { class: 'muted' }, 'Pak se dohodněte, kdo je impostor.'),
-    el('button', { class: 'btn btn-primary', onclick: renderCountdown }, 'Odhalit'),
+    el('button', { class: 'btn btn-primary btn-lg btn-reveal', onclick: renderCountdown }, 'Odhalit'),
   ] });
 }
 
@@ -343,20 +374,21 @@ function renderResult({ celebrate = false } = {}) {
   const names = single ? `Hráč ${ids[0]}` : `Hráči ${ids.slice(0, -1).join(', ')} a ${ids.at(-1)}`;
 
   show('local-result', { dir: 'fade', content: [
-    el('div', { class: 'card result-hero' },
+    el('div', { class: 'result-hero' },
+      maskIcon('result-mask'),
       el('p', { class: 'result-kicker' }, single ? 'Impostorem byl' : 'Impostory byli'),
       el('p', { class: 'result-who' }, names),
     ),
     round.mode === 'words'
-      ? el('div', { class: 'card role-crew' },
-        el('p', { class: 'muted' }, `Téma: ${round.theme}`),
-        el('p', { class: 'role-word' }, round.secret))
-      : el('div', { class: 'card role-crew' },
-        el('p', { class: 'muted' }, 'Otázka skupiny'),
-        el('p', { class: 'role-question' }, round.secret),
-        el('p', { class: 'muted result-impostor-label' }, 'Otázka impostora'),
-        el('p', { class: 'role-question result-impostor-question' }, round.impostorSecret)),
-    el('button', { class: 'btn btn-primary', onclick: nextRound }, 'Další kolo'),
+      ? el('div', { class: 'secret-card' },
+        el('p', { class: 'role-label' }, `Tajné slovo · ${round.theme}`),
+        el('p', { class: 'secret-word' }, round.secret))
+      : el('div', { class: 'secret-card' },
+        el('p', { class: 'role-label' }, 'Otázka skupiny'),
+        el('p', { class: 'secret-question' }, round.secret),
+        el('p', { class: 'role-label result-impostor-label' }, 'Otázka impostora'),
+        el('p', { class: 'secret-question result-impostor-question' }, round.impostorSecret)),
+    el('button', { class: 'btn btn-primary btn-lg', onclick: nextRound }, 'Další kolo'),
     el('button', { class: 'btn', onclick: () => show('local-setup', { dir: 'back' }) }, 'Nastavení'),
   ] });
 
@@ -368,6 +400,31 @@ function renderResult({ celebrate = false } = {}) {
 }
 
 // ---------- komponenty ----------
+
+function countRow(label, control) {
+  return el('div', { class: 'count-row' }, el('span', { class: 'field-label' }, label), control);
+}
+
+/** Náhled stolu: jedna malá karta za hráče, impostoři červeně. */
+function playerStrip(players, impostors) {
+  return el('div', { class: 'player-strip', 'aria-hidden': 'true' },
+    Array.from({ length: players }, (_, i) => el('span', {
+      class: i >= players - impostors ? 'mini-card mini-card--impostor' : 'mini-card',
+    }, i >= players - impostors ? '?' : '')));
+}
+
+const MODES = [
+  ['words', 'Slova', 'Impostor zná jen téma'],
+  ['questions', 'Otázky', 'Impostor má jinou otázku'],
+];
+
+function modeTiles(current, onChange) {
+  return el('div', { class: 'mode-tiles', role: 'group' }, MODES.map(([value, name, desc]) => el('button', {
+    class: `mode-tile mode-tile--${value}`,
+    'aria-pressed': String(value === current),
+    onclick: () => value !== current && onChange(value),
+  }, el('span', { class: 'mode-name' }, name), el('span', { class: 'mode-desc' }, desc))));
+}
 
 function field(label, control) {
   return el('div', { class: 'field' }, el('span', { class: 'field-label' }, label), control);

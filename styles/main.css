@@ -1,71 +1,122 @@
-/* Mobil first, cílový viewport ~380 px. Světlé i tmavé téma přes prefers-color-scheme. */
+/* Mistr Impostor – vizuál „karetní stůl".
+   Mobil first, cílový viewport ~380 px. Světlé i tmavé téma přes prefers-color-scheme.
+   Karty (rub i líc) jsou papírové v obou tématech – karta je karta. */
+
+/* ---------- písma (OFL, uložená lokálně kvůli PWA/offline) ---------- */
+
+@font-face {
+  font-family: "Unbounded";
+  src: url("../fonts/unbounded-latin-wght-normal.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Unbounded";
+  src: url("../fonts/unbounded-latin-ext-wght-normal.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Onest";
+  src: url("../fonts/onest-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Onest";
+  src: url("../fonts/onest-latin-ext-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------- tokeny ---------- */
 
 :root {
-  --bg: #f6f4fb;
+  /* Stůl */
+  --table: #e8ebf4;
   --surface: #ffffff;
-  --surface-2: #ece8f5;
-  --text: #1c1a24;
-  --muted: #625d72;
-  --border: #d9d4e6;
+  --surface-2: #dce1ee;
+  --text: #141a2f;
+  --muted: #565f80;
+  --border: #c7cee2;
+
+  /* Papír karet – stejný v obou tématech */
+  --paper: #fdfcfa;
+  --paper-ink: #141a2f;
+  --paper-muted: #6b7190;
 
   /* Režim Slova – fialová */
-  --words: #7c3aed;
+  --words: #6343f5;
   --words-ink: #ffffff;
-  --words-soft: #efe8ff;
-  --words-glow: #b794ff;
+  --words-soft: #e6e0ff;
+  --words-deep: #3a1fb3;
+  --words-hi: #8d73ff;
+  --words-print: #5233e6;
 
   /* Režim Otázky – oranžová */
-  --questions: #c2410c;
+  --questions: #d9560a;
   --questions-ink: #ffffff;
-  --questions-soft: #fff0e3;
-  --questions-glow: #ffa75e;
+  --questions-soft: #ffe6d3;
+  --questions-deep: #8f3503;
+  --questions-hi: #ff8a3a;
+  --questions-print: #c24c06;
 
   /* Impostor – červená */
-  --impostor: #d42a3c;
+  --impostor: #d81f3c;
   --impostor-ink: #ffffff;
-  --impostor-soft: #fde6e9;
-  --impostor-glow: #ff7a88;
+  --impostor-soft: #ffe0e5;
+  --impostor-deep: #7f0c1f;
+  --impostor-hi: #ff4d64;
+  --impostor-print: #c8102e;
 
   /* Aktuální režim (přepíná body[data-mode]) */
   --accent: var(--words);
   --accent-ink: var(--words-ink);
   --accent-soft: var(--words-soft);
-  --accent-glow: var(--words-glow);
-  --accent-2-glow: var(--questions-glow);
+  --accent-deep: var(--words-deep);
+  --accent-hi: var(--words-hi);
+  --accent-print: var(--words-print);
+  --accent-2-hi: var(--questions-hi);
+
+  --spot-opacity: 0.32;
 
   --radius: 16px;
-  --radius-sm: 10px;
+  --radius-card: 20px;
   --tap: 44px;
   --gutter: 16px;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 16px rgb(0 0 0 / 0.06);
+  --shadow: 0 1px 2px rgb(20 26 47 / 0.08), 0 6px 18px rgb(20 26 47 / 0.08);
+  --card-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 2px 4px rgb(10 14 30 / 0.18), 0 22px 44px -14px rgb(10 14 30 / 0.5);
 
-  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --display: "Unbounded", system-ui, sans-serif;
+  --font: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #16141d;
-    --surface: #211e2b;
-    --surface-2: #2b2738;
-    --text: #f0edf7;
-    --muted: #a8a2b8;
-    --border: #3a3549;
+    --table: #121931;
+    --surface: #1b2343;
+    --surface-2: #273158;
+    --text: #eef0f8;
+    --muted: #9ca5c6;
+    --border: #313c66;
 
-    --words: #a98bff;
-    --words-ink: #170d33;
-    --words-soft: #2a2242;
-    --words-glow: #6d3ce6;
+    --words: #a08cff;
+    --words-ink: #150a3d;
+    --words-soft: #2a2760;
 
-    --questions: #ff9a4d;
+    --questions: #ff9150;
     --questions-ink: #2b1302;
-    --questions-soft: #3a2616;
-    --questions-glow: #d9580f;
+    --questions-soft: #3d2c3a;
 
-    --impostor: #ff6b78;
+    --impostor: #ff5d71;
     --impostor-ink: #2d060b;
-    --impostor-soft: #3d1b21;
-    --impostor-glow: #c42236;
+    --impostor-soft: #3f1d33;
 
+    --spot-opacity: 0.28;
     --shadow: none;
   }
 }
@@ -74,8 +125,10 @@ body[data-mode="questions"] {
   --accent: var(--questions);
   --accent-ink: var(--questions-ink);
   --accent-soft: var(--questions-soft);
-  --accent-glow: var(--questions-glow);
-  --accent-2-glow: var(--words-glow);
+  --accent-deep: var(--questions-deep);
+  --accent-hi: var(--questions-hi);
+  --accent-print: var(--questions-print);
+  --accent-2-hi: var(--words-hi);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -85,7 +138,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--bg);
+  background: var(--table);
   color: var(--text);
   font-family: var(--font);
   font-size: 17px;
@@ -93,7 +146,16 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ---------- animované pozadí ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- stůl: plstěná textura a světlo nad stolem ---------- */
 
 .backdrop {
   position: fixed;
@@ -101,43 +163,41 @@ body {
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  background: var(--bg);
+  background: var(--table);
 }
 
-/* Měkké skvrny: radiální gradient místo filter: blur – vypadá stejně, na mobilu je levnější. */
-.blob {
-  --size: 70vmax;
-  --color: var(--accent-glow);
+/* Jemné zrno plsti – SVG šum, žádný obrázek. */
+.backdrop::after {
+  content: "";
   position: absolute;
-  width: var(--size);
-  height: var(--size);
+  inset: 0;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Měkké světlo: radiální gradient místo filter: blur – na mobilu levnější. */
+.spot {
+  position: absolute;
+  width: 110vmax;
+  height: 110vmax;
   border-radius: 50%;
   background: radial-gradient(circle closest-side, var(--color), transparent);
-  opacity: var(--blob-opacity);
+  opacity: var(--spot-opacity);
   will-change: transform;
-  animation: drift var(--dur, 28s) ease-in-out infinite alternate;
+  animation: drift var(--dur) ease-in-out infinite alternate;
 }
 
-:root { --blob-opacity: 0.4; }
-
-@media (prefers-color-scheme: dark) {
-  :root { --blob-opacity: 0.32; }
-}
-
-.blob-1 { top: -30vmax; left: -25vmax; --dur: 26s; }
-.blob-2 { bottom: -35vmax; right: -30vmax; --color: var(--accent-2-glow); --dur: 32s; animation-delay: -8s; }
-.blob-3 { top: 30%; right: -35vmax; --size: 55vmax; --dur: 22s; animation-delay: -14s; }
-.blob-4 { bottom: 10%; left: -30vmax; --size: 45vmax; --color: var(--impostor-glow); --dur: 36s; animation-delay: -20s; opacity: calc(var(--blob-opacity) * 0.6); }
+.spot-1 { --color: var(--accent-hi); --dur: 30s; top: -70vmax; left: 50%; margin-left: -55vmax; }
+.spot-2 { --color: var(--accent-2-hi); --dur: 38s; bottom: -80vmax; right: -60vmax; opacity: calc(var(--spot-opacity) * 0.55); animation-delay: -12s; }
 
 @keyframes drift {
-  0%   { transform: translate(0, 0) scale(1); }
-  33%  { transform: translate(8vmax, 6vmax) scale(1.08); }
-  66%  { transform: translate(-6vmax, 10vmax) scale(0.94); }
-  100% { transform: translate(4vmax, -6vmax) scale(1.04); }
+  from { transform: translate(-4vmax, 0) scale(1); }
+  to   { transform: translate(4vmax, 3vmax) scale(1.06); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blob { animation: none; }
+  .spot { animation: none; }
 }
 
 /* ---------- přechody obrazovek ---------- */
@@ -200,7 +260,7 @@ html[data-nav="back"]::view-transition-new(root) { animation-name: screen-in-lef
   padding: 0;
   border: 1px solid var(--border);
   border-radius: 50%;
-  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
   color: var(--text);
   cursor: pointer;
   backdrop-filter: blur(8px);
@@ -227,11 +287,12 @@ html[data-nav="back"]::view-transition-new(root) { animation-name: screen-in-lef
 
 [hidden] { display: none !important; }
 
-h1, h2, h3 { margin: 0; line-height: 1.2; }
-h2 { font-size: 1.35rem; }
+h1, h2, h3 { margin: 0; line-height: 1.15; }
+h2 { font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
 p { margin: 0; }
 
 .muted { color: var(--muted); }
+.small { font-size: 0.9rem; }
 
 /* ---------- obrazovky ---------- */
 
@@ -249,23 +310,10 @@ p { margin: 0; }
   min-height: var(--tap);
 }
 
-.screen[data-screen="home"] .screen-header {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  margin-top: 12vh;
-}
-
-.logo {
-  font-size: 2.4rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-}
-
 .stack {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .stack.center {
@@ -273,6 +321,96 @@ p { margin: 0; }
   justify-content: center;
   align-items: stretch;
   text-align: center;
+}
+
+/* ---------- úvod: vějíř karet ---------- */
+
+.screen[data-screen="home"] {
+  justify-content: center;
+  gap: 28px;
+  text-align: center;
+}
+
+.fan {
+  position: relative;
+  height: 200px;
+  margin-top: 4vh;
+}
+
+.fan-card {
+  --w: 116px;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: var(--w);
+  aspect-ratio: 5 / 7;
+  margin-left: calc(var(--w) / -2);
+  border-radius: 14px;
+  padding: 7px;
+  background: var(--paper);
+  box-shadow: var(--card-shadow);
+  transform-origin: 50% 120%;
+  animation: fan-out 700ms cubic-bezier(0.2, 1.3, 0.4, 1) 120ms both;
+}
+
+.fan-card::before {
+  content: "";
+  display: block;
+  height: 100%;
+  border-radius: 9px;
+  background:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.12) 0 2px, transparent 2px 12px),
+    repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.12) 0 2px, transparent 2px 12px),
+    radial-gradient(circle at 50% 40%, var(--c-hi), var(--c-deep));
+}
+
+.fan-card--words { --c-hi: var(--words-hi); --c-deep: var(--words-deep); --to: rotate(-17deg) translateX(-6px); }
+.fan-card--questions { --c-hi: var(--questions-hi); --c-deep: var(--questions-deep); --to: rotate(17deg) translateX(6px); }
+
+.fan-card--impostor {
+  --to: translateY(-14px) rotate(-2deg);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: radial-gradient(circle at 50% 35%, var(--impostor-hi), var(--impostor) 55%, var(--impostor-deep));
+}
+
+.fan-card--impostor::before { content: none; }
+.fan-mask { width: 72%; filter: drop-shadow(0 3px 6px rgb(0 0 0 / 0.3)); }
+
+@keyframes fan-out {
+  from { transform: none; }
+  to { transform: var(--to); }
+}
+
+.fan-card { transform: var(--to); }
+
+.home-title { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+.logo {
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 14vw, 3.9rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+
+.logo span { display: block; }
+
+.tagline {
+  max-width: 22ch;
+  font-size: 1.08rem;
+  color: var(--muted);
+}
+
+.home-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+
+.btn-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-pair .btn { padding-inline: 10px; font-size: 0.95rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fan-card { animation: none; }
 }
 
 /* ---------- tlačítka ---------- */
@@ -283,7 +421,7 @@ p { margin: 0; }
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 56px;
+  min-height: 54px;
   padding: 12px 20px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -295,23 +433,36 @@ p { margin: 0; }
   box-shadow: var(--shadow);
   touch-action: manipulation;
   user-select: none;
+  transition: transform 90ms ease, box-shadow 90ms ease;
 }
 
 .btn:active { transform: scale(0.98); }
-.btn:focus-visible, .btn-back:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn:focus-visible, .btn-back:focus-visible, .mode-tile:focus-visible, .chip:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
+/* Hlavní akce: „žeton" s hranou, při stisku se zamáčkne. */
 .btn-primary {
+  border: 0;
   background: var(--accent);
-  border-color: var(--accent);
   color: var(--accent-ink);
+  font-family: var(--display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  box-shadow: 0 4px 0 var(--accent-deep), 0 10px 20px -8px color-mix(in srgb, var(--accent-deep) 70%, transparent);
 }
 
-.btn-impostor {
+.btn-primary:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-deep); }
+.btn-primary:disabled { box-shadow: none; }
+
+.btn-lg { min-height: 60px; }
+
+.btn-reveal {
   background: var(--impostor);
-  border-color: var(--impostor);
   color: var(--impostor-ink);
+  box-shadow: 0 4px 0 var(--impostor-deep), 0 10px 20px -8px color-mix(in srgb, var(--impostor-deep) 70%, transparent);
 }
+.btn-reveal:active:not(:disabled) { box-shadow: 0 1px 0 var(--impostor-deep); }
 
 .btn-back {
   appearance: none;
@@ -327,25 +478,6 @@ p { margin: 0; }
   cursor: pointer;
 }
 
-/* ---------- formuláře ---------- */
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field-label { font-weight: 600; }
-
-.field-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.small { font-size: 0.9rem; }
-
 .btn-link {
   appearance: none;
   min-height: var(--tap);
@@ -358,6 +490,142 @@ p { margin: 0; }
   cursor: pointer;
 }
 
+/* ---------- nastavení ---------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label { font-weight: 650; }
+
+.field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Hráči a impostoři v jednom panelu s náhledem stolu. */
+.table-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  box-shadow: var(--shadow);
+}
+
+.count-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 56px;
+}
+
+.count-row .field-label { font-size: 1.05rem; }
+
+.stepper {
+  display: grid;
+  grid-template-columns: 48px 3ch 48px;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.stepper output {
+  font-family: var(--display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepper .btn {
+  width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.player-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+
+.mini-card {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  aspect-ratio: 5 / 7;
+  border-radius: 7px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  box-shadow: 0 1px 2px rgb(10 14 30 / 0.25), 0 4px 10px -4px rgb(10 14 30 / 0.4);
+}
+
+.player-strip .mini-card {
+  width: 24px;
+  border-radius: 5px;
+  border: 2px solid var(--paper);
+  font-size: 0.75rem;
+  color: #fff;
+  background:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.18) 0 1px, transparent 1px 5px),
+    var(--accent);
+}
+
+.player-strip .mini-card--impostor { background: var(--impostor); }
+
+.mode-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mode-tile {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 84px;
+  padding: 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mode-tile--words { --tile: var(--words); --tile-soft: var(--words-soft); }
+.mode-tile--questions { --tile: var(--questions); --tile-soft: var(--questions-soft); }
+
+.mode-name { font-family: var(--display); font-weight: 700; font-size: 1.05rem; }
+.mode-desc { font-size: 0.85rem; line-height: 1.3; color: var(--muted); }
+
+.mode-tile[aria-pressed="true"] {
+  border-color: var(--tile);
+  background: var(--tile-soft);
+}
+
+.mode-tile[aria-pressed="true"] .mode-name { color: var(--tile); }
+.mode-tile[aria-pressed="true"] .mode-desc { color: var(--text); }
+
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -368,12 +636,13 @@ p { margin: 0; }
   appearance: none;
   min-height: var(--tap);
   padding: 8px 14px;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 999px;
-  background: var(--surface);
+  background: transparent;
   color: var(--muted);
   font: inherit;
   font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -381,30 +650,18 @@ p { margin: 0; }
   border-color: var(--accent);
   background: var(--accent);
   color: var(--accent-ink);
-  font-weight: 600;
+  font-weight: 650;
 }
 
 .input {
   min-height: var(--tap);
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   background: var(--surface);
   color: var(--text);
   font: inherit;
 }
-
-.stepper {
-  display: grid;
-  grid-template-columns: 64px 1fr 64px;
-  align-items: center;
-  gap: 8px;
-  text-align: center;
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-.stepper .btn { min-height: 52px; padding: 0; font-size: 1.5rem; }
 
 .segmented {
   display: grid;
@@ -423,12 +680,13 @@ p { margin: 0; }
   color: var(--text);
   font: inherit;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .segmented button[aria-pressed="true"] {
-  background: var(--accent);
-  color: var(--accent-ink);
-  box-shadow: var(--shadow);
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgb(10 14 30 / 0.2);
 }
 
 .toggle {
@@ -439,63 +697,106 @@ p { margin: 0; }
   min-height: var(--tap);
 }
 
-.toggle input { width: 24px; height: 24px; accent-color: var(--accent); }
-
-/* ---------- karty a role ---------- */
-
-.card {
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  box-shadow: var(--shadow);
+/* Přepínač místo zaškrtávátka. */
+.toggle input {
+  appearance: none;
+  flex: none;
+  position: relative;
+  width: 52px;
+  height: 32px;
+  margin: 0;
+  border-radius: 999px;
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: background 150ms ease;
 }
 
-.role-word {
-  font-size: clamp(2rem, 11vw, 3.2rem);
-  font-weight: 800;
-  line-height: 1.1;
-  overflow-wrap: anywhere;
+.toggle input::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  transition: transform 150ms ease;
 }
 
-.role-question {
-  font-size: 1.4rem;
-  font-weight: 700;
+.toggle input:checked { background: var(--accent); }
+.toggle input:checked::before { transform: translateX(20px); }
+.toggle input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Rozdat role – vždy po ruce dole. */
+.sticky-cta {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: auto calc(-1 * var(--gutter)) calc(-1 * max(var(--gutter), env(safe-area-inset-bottom)));
+  padding: 20px var(--gutter) max(var(--gutter), env(safe-area-inset-bottom));
+  background: linear-gradient(to bottom, transparent, var(--table) 22px);
 }
-
-.role-crew {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-
-.role-crew .role-word, .role-crew .role-question { color: var(--accent); }
-
-.role-impostor {
-  border-color: var(--impostor);
-  background: var(--impostor-soft);
-}
-
-.role-impostor .role-word { color: var(--impostor); }
 
 .warning {
   color: var(--impostor);
   font-weight: 700;
 }
 
-.card { display: flex; flex-direction: column; gap: 8px; }
+@media (prefers-reduced-motion: reduce) {
+  .toggle input, .toggle input::before, .btn { transition: none; }
+}
 
-.pass-title { font-size: 1.8rem; }
+/* ---------- předávání telefonu ---------- */
 
-.role-head { display: flex; flex-direction: column; gap: 4px; }
+.role-head { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 
-/* ---------- karta s rolí: 3D flip při držení ---------- */
+.round-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+
+.round-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-family: var(--display);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.pips {
+  display: flex;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pips li {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  transition: width 200ms ease;
+}
+
+.pips .is-done { background: color-mix(in srgb, var(--accent) 45%, transparent); }
+.pips .is-current { width: 22px; background: var(--accent); }
+
+.pass-title { font-size: clamp(1.35rem, 6.4vw, 1.7rem); }
+
+/* ---------- hrací karta ---------- */
 
 .flip {
   --flip-ms: 420ms;
   position: relative;
+  align-self: center;
+  height: min(440px, 54dvh);
+  aspect-ratio: 5 / 7;
+  max-width: 100%;
   perspective: 1200px;
-  min-height: 300px;
-  border-radius: var(--radius);
+  border-radius: var(--radius-card);
   cursor: pointer;
   touch-action: none;
   user-select: none;
@@ -508,12 +809,11 @@ p { margin: 0; }
 .flip.is-dragging { transition: none; }
 .flip.is-flying { transition: transform 320ms cubic-bezier(0.5, 0, 0.9, 0.4); pointer-events: none; }
 
-.flip:focus-visible { box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--accent); }
+.flip:focus-visible { box-shadow: 0 0 0 3px var(--table), 0 0 0 6px var(--accent); }
 
 .flip-inner {
   display: grid;
   height: 100%;
-  min-height: inherit;
   transform-style: preserve-3d;
   transition: transform var(--flip-ms) cubic-bezier(0.3, 1.3, 0.5, 1);
 }
@@ -529,39 +829,160 @@ p { margin: 0; }
 
 .flip-back { transform: rotateY(180deg); }
 
-.flip-face > .card {
-  justify-content: center;
-  min-height: 300px;
+.pcard {
+  position: relative;
+  height: 100%;
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  color: var(--paper-ink);
+  box-shadow: var(--card-shadow);
   text-align: center;
 }
 
-.card-cover {
+/* Rub: papírový okraj, uvnitř vzor v barvě režimu a medailon s číslem hráče. */
+.pcard-back { padding: 11px; }
+
+.pcard-frame {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 4px;
-  border: 2px solid var(--accent);
-  color: var(--accent);
+  justify-content: center;
+  gap: 18px;
+  height: 100%;
+  border-radius: 12px;
+  color: #fff;
   background:
-    repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--accent) 10%, transparent) 14px 28px),
-    var(--surface);
+    radial-gradient(circle at 50% 46%, transparent 30%, rgb(0 0 0 / 0.22) 100%),
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.1) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(-45deg, rgb(255 255 255 / 0.1) 0 2px, transparent 2px 16px),
+    linear-gradient(160deg, var(--accent-hi), var(--accent-deep));
 }
 
+.pcard-medal {
+  display: grid;
+  place-items: center;
+  width: 48%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: 0 0 0 6px rgb(255 255 255 / 0.18), 0 0 0 8px rgb(255 255 255 / 0.5), 0 10px 24px rgb(0 0 0 / 0.35);
+}
 
-.icon-lg { width: 64px; height: 64px; }
+.pcard-num {
+  font-family: var(--display);
+  font-size: clamp(2.8rem, 15vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+}
 
-.cover-number {
-  font-size: 4.5rem;
+.pcard-hint {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.22);
+  font-weight: 650;
+  font-size: 0.92rem;
+}
+
+/* Líc: rohové indexy s číslem hráče jako na skutečné kartě. */
+.pcard-face {
+  display: grid;
+  place-items: center;
+  padding: 44px 22px;
+}
+
+.pcard-corner {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  font-family: var(--display);
+  font-size: 1.15rem;
   font-weight: 800;
   line-height: 1;
-  color: var(--text);
+  color: var(--accent-print);
 }
 
-.cover-label {
-  font-weight: 700;
-  letter-spacing: 0.02em;
+.pcard-corner--br { top: auto; left: auto; bottom: 12px; right: 15px; transform: rotate(180deg); }
+
+.pcard-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
 }
+
+.pcard--crew { box-shadow: inset 0 0 0 7px var(--paper), inset 0 0 0 8.5px color-mix(in srgb, var(--accent-print) 30%, transparent), var(--card-shadow); }
+
+.role-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--paper-muted);
+}
+
+.role-word {
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 9vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--accent-print);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.role-question {
+  font-size: 1.28rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+/* Impostor: červená karta s maskou. */
+.pcard--impostor {
+  color: #fff;
+  background:
+    radial-gradient(circle at 50% 30%, var(--impostor-hi), var(--impostor) 50%, var(--impostor-deep));
+}
+
+.pcard--impostor .pcard-corner { color: #fff; }
+.pcard--impostor .role-label { color: rgb(255 255 255 / 0.75); }
+
+.role-mask { width: 84px; margin-bottom: 4px; filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3)); }
+
+.role-title {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.role-theme {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.role-note { font-size: 0.95rem; line-height: 1.35; opacity: 0.88; text-wrap: balance; }
 
 @media (prefers-reduced-motion: reduce) {
-  .flip, .flip-inner { transition: none; }
+  .flip, .flip-inner, .pips li { transition: none; }
+}
+
+/* ---------- kolo ---------- */
+
+.round-intro { font-size: 1.1rem; font-weight: 500; }
+
+.order {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 /* ---------- časomíra ---------- */
@@ -581,8 +1002,8 @@ p { margin: 0; }
   position: relative;
   display: grid;
   place-items: center;
-  width: 168px;
-  height: 168px;
+  width: 176px;
+  height: 176px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -616,14 +1037,15 @@ p { margin: 0; }
 .timer-text { position: relative; display: flex; flex-direction: column; align-items: center; }
 
 .timer-value {
-  font-size: 3rem;
+  font-family: var(--display);
+  font-size: 2.8rem;
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   color: var(--timer-color);
 }
 
-.timer.is-done .timer-value { font-size: 2.2rem; }
+.timer.is-done .timer-value { font-size: 1.9rem; }
 
 .timer-status { font-size: 0.8rem; color: var(--muted); }
 
@@ -644,7 +1066,8 @@ p { margin: 0; }
 /* ---------- odhalení ---------- */
 
 .countdown-label {
-  font-size: 1.4rem;
+  font-family: var(--display);
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--muted);
 }
@@ -656,12 +1079,13 @@ p { margin: 0; }
 }
 
 .countdown-num {
-  font-size: 10rem;
+  font-family: var(--display);
+  font-size: 9rem;
   font-weight: 900;
   line-height: 1;
   color: var(--impostor);
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 40px color-mix(in srgb, var(--impostor-glow) 60%, transparent);
+  text-shadow: 0 0 48px color-mix(in srgb, var(--impostor-hi) 60%, transparent);
   animation: count-pop 1s cubic-bezier(0.2, 0.9, 0.3, 1) both;
 }
 
@@ -672,38 +1096,67 @@ p { margin: 0; }
   100% { opacity: 0; transform: scale(0.6); }
 }
 
+/* Výsledek: impostorova karta lícem nahoru. */
 .result-hero {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 28px 20px;
+  gap: 6px;
+  padding: 26px 20px 30px;
+  border-radius: var(--radius-card);
   text-align: center;
-  border: 2px solid var(--impostor);
+  color: #fff;
   background:
-    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--impostor-glow) 45%, transparent), transparent 70%),
-    var(--impostor-soft);
+    radial-gradient(circle at 50% 20%, var(--impostor-hi), var(--impostor) 55%, var(--impostor-deep));
+  box-shadow: var(--card-shadow);
   animation: hero-in 600ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
 }
 
+.result-mask { width: 72px; margin-bottom: 6px; filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.3)); }
+
 .result-kicker {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.85rem;
-  color: var(--impostor);
+  font-weight: 600;
+  font-size: 1rem;
+  opacity: 0.85;
 }
 
 .result-who {
-  font-size: clamp(2.2rem, 12vw, 3.2rem);
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 10vw, 2.7rem);
   font-weight: 900;
   line-height: 1.05;
-  color: var(--impostor);
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
-
-.result-impostor-label { color: var(--impostor); font-weight: 600; }
-.role-crew .result-impostor-question { color: var(--impostor); }
 
 @keyframes hero-in {
-  from { opacity: 0; transform: scale(0.7) rotate(-3deg); }
+  from { opacity: 0; transform: scale(0.7) rotate(-4deg); }
 }
+
+.secret-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px 20px;
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  color: var(--paper-ink);
+  box-shadow: var(--card-shadow);
+}
+
+.secret-word {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 8vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--accent-print);
+  overflow-wrap: anywhere;
+}
+
+.secret-question { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
+
+.result-impostor-label { margin-top: 10px; color: var(--impostor-print); }
+.result-impostor-question { color: var(--impostor-print); }
 
 .confetti {
   position: fixed;
@@ -716,15 +1169,10 @@ p { margin: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .countdown-num, .result-hero { animation: none; }
+  .btn:active, .btn-primary:active:not(:disabled) { transform: none; }
 }
 
-.list-numbered { counter-reset: order; }
-.list-numbered > li { counter-increment: order; font-weight: 600; }
-.list-numbered > li::before {
-  content: counter(order) ".";
-  min-width: 1.5em;
-  color: var(--muted);
-}
+/* ---------- seznamy (online lobby) ---------- */
 
 .list {
   margin: 0;
@@ -741,10 +1189,6 @@ p { margin: 0; }
   gap: 12px;
   min-height: var(--tap);
   padding: 8px 14px;
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   background: var(--surface-2);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btn:active { transform: none; }
 }

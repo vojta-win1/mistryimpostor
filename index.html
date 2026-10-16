@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f6f4fb" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#16141d" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#e8ebf4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121931" media="(prefers-color-scheme: dark)">
   <title>Mistr Impostor</title>
+  <link rel="preload" href="fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/onest-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles/main.css">
   <script type="module" src="src/main.js"></script>
 </head>
 <body>
   <div class="backdrop" aria-hidden="true">
-    <span class="blob blob-1"></span>
-    <span class="blob blob-2"></span>
-    <span class="blob blob-3"></span>
-    <span class="blob blob-4"></span>
+    <span class="spot spot-1"></span>
+    <span class="spot spot-2"></span>
   </div>
   <header class="app-bar">
     <button class="icon-btn" id="mute" type="button" aria-label="Ztlumit zvuky" aria-pressed="false">
@@ -32,14 +32,21 @@
   <main id="app">
     <!-- Úvod -->
     <section class="screen" data-screen="home" hidden>
-      <header class="screen-header">
-        <h1 class="logo">Mistr Impostor</h1>
-        <p class="muted">Kdo mezi vámi nezná tajemství?</p>
+      <div class="fan" aria-hidden="true">
+        <span class="fan-card fan-card--words"></span>
+        <span class="fan-card fan-card--questions"></span>
+        <span class="fan-card fan-card--impostor"><svg class="fan-mask" viewBox="0 0 64 38"><path fill="currentColor" fill-rule="evenodd" d="M4 9C14 2 50 2 60 9c0 15-6 25-17 25-6 0-8-6-11-6s-5 6-11 6C10 34 4 24 4 9zm11 9.5c0 3 3 5 6.5 5s6.5-2 6.5-5-3-4.5-6.5-4.5S15 15.5 15 18.5zm21 0c0 3 3 5 6.5 5s6.5-2 6.5-5-3-4.5-6.5-4.5S36 15.5 36 18.5z"/></svg></span>
+      </div>
+      <header class="home-title">
+        <h1 class="logo"><span>Mistr</span> <span>Impostor</span></h1>
+        <p class="tagline">Všichni znají tajemství.<br>Až na jednoho.</p>
       </header>
-      <div class="stack">
-        <button class="btn btn-primary" data-go="local-setup">Hrát na jednom telefonu</button>
-        <button class="btn" data-go="online-create">Založit místnost</button>
-        <button class="btn" data-go="online-join">Připojit se</button>
+      <div class="home-actions">
+        <button class="btn btn-primary btn-lg" data-go="local-setup">Hrát na jednom telefonu</button>
+        <div class="btn-pair">
+          <button class="btn" data-go="online-create">Založit místnost</button>
+          <button class="btn" data-go="online-join">Připojit se</button>
+        </div>
       </div>
     </section>
 
@@ -54,7 +61,7 @@
     </section>
 
     <section class="screen" data-screen="local-round" hidden>
-      <header class="screen-header"><h2>Kolo</h2></header>
+      <header class="screen-header"><h2>Hrajte!</h2></header>
       <div class="stack" data-slot="content"></div>
     </section>
 
