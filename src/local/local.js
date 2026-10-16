@@ -266,6 +266,15 @@ function maskIcon(cls = 'role-mask') {
   return wrap.firstChild;
 }
 
+/**
+ * Odstavec s tajným slovem. Dlouhá slova se zmenší, aby se vešla na jeden řádek
+ * a nelámala se uprostřed („krasobrusle-ní“).
+ */
+function wordText(cls, text) {
+  const longest = Math.max(...text.split(/s+/).map((w) => w.length));
+  return el('p', { class: cls, 'data-size': longest > 12 ? 'xs' : longest > 9 ? 's' : null }, text);
+}
+
 /** Líc hrací karty s rohovými indexy (číslo hráče). */
 function cardFace(kind, id, ...body) {
   return el('div', { class: `pcard pcard-face pcard--${kind}` },
@@ -296,7 +305,7 @@ function roleCard(role, mode, id) {
   if (mode === 'words') {
     return cardFace('crew', id,
       el('p', { class: 'role-label' }, role.theme),
-      el('p', { class: 'role-word' }, role.text),
+      wordText('role-word', role.text),
     );
   }
   // Posádka i impostor, který o tom neví, vidí stejně vypadající kartu.
@@ -382,7 +391,7 @@ function renderResult({ celebrate = false } = {}) {
     round.mode === 'words'
       ? el('div', { class: 'secret-card' },
         el('p', { class: 'role-label' }, `Tajné slovo · ${round.theme}`),
-        el('p', { class: 'secret-word' }, round.secret))
+        wordText('secret-word', round.secret))
       : el('div', { class: 'secret-card' },
         el('p', { class: 'role-label' }, 'Otázka skupiny'),
         el('p', { class: 'secret-question' }, round.secret),

@@ -930,7 +930,11 @@ p { margin: 0; }
   color: var(--accent-print);
   overflow-wrap: anywhere;
   hyphens: auto;
+  text-wrap: balance;
 }
+
+.role-word[data-size="s"] { font-size: clamp(1.5rem, 7.6vw, 2rem); }
+.role-word[data-size="xs"] { font-size: clamp(1.2rem, 6.2vw, 1.7rem); }
 
 .role-question {
   font-size: 1.28rem;
@@ -1152,6 +1156,9 @@ p { margin: 0; }
   color: var(--accent-print);
   overflow-wrap: anywhere;
 }
+
+.secret-word[data-size="s"] { font-size: clamp(1.4rem, 6.8vw, 1.8rem); }
+.secret-word[data-size="xs"] { font-size: clamp(1.15rem, 5.6vw, 1.5rem); }
 
 .secret-question { font-size: 1.15rem; font-weight: 700; line-height: 1.3; }
 
