@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Mistr Impostor">
+  <defs>
+    <linearGradient id="table" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2550"/>
+      <stop offset="1" stop-color="#0e1428"/>
+    </linearGradient>
+    <radialGradient id="card" cx="0.5" cy="0.32" r="0.85">
+      <stop offset="0" stop-color="#ff4d64"/>
+      <stop offset="0.55" stop-color="#d81f3c"/>
+      <stop offset="1" stop-color="#7f0c1f"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#table)"/>
+
+  <!-- Karty vzadu: fialová (Slova) a oranžová (Otázky) -->
+  <g opacity="0.95">
+    <rect x="96" y="112" width="180" height="252" rx="22" fill="#fdfcfa" transform="rotate(-15 186 238)"/>
+    <rect x="108" y="124" width="156" height="228" rx="14" fill="#6d4df6" transform="rotate(-15 186 238)"/>
+    <rect x="236" y="112" width="180" height="252" rx="22" fill="#fdfcfa" transform="rotate(15 326 238)"/>
+    <rect x="248" y="124" width="156" height="228" rx="14" fill="#d9580f" transform="rotate(15 326 238)"/>
+  </g>
+
+  <!-- Karta impostora vepředu -->
+  <rect x="160" y="96" width="192" height="268" rx="26" fill="#fdfcfa"/>
+  <rect x="172" y="108" width="168" height="244" rx="18" fill="url(#card)"/>
+
+  <!-- Maska -->
+  <path fill="#fdfcfa" fill-rule="evenodd" d="M188 196c26-18 110-18 136 0 0 39-16 65-44 65-16 0-21-16-28-16s-12 16-28 16c-28 0-36-26-36-65zm29 25c0 8 8 13 17 13s17-5 17-13-8-12-17-12-17 4-17 12zm55 0c0 8 8 13 17 13s17-5 17-13-8-12-17-12-17 4-17 12z"/>
+</svg>

@@ -3,6 +3,7 @@ import { show } from './ui/router.js';
 import { loadContent } from './game/content.js';
 import { initLocal, restoreLocal } from './local/local.js';
 import { sound, isMuted, setMuted, onMutedChange } from './ui/sound.js';
+import { registerServiceWorker } from './pwa.js';
 
 const contentPromise = loadContent();
 contentPromise.catch((err) => console.error(err));
@@ -31,10 +32,9 @@ document.addEventListener('click', (e) => {
 
 initLocal({ getContent: () => contentPromise });
 
-const params = new URLSearchParams(location.search);
-if (params.has('room')) {
-  restoreLocal({ navigate: false });
-  show('online-join');
-} else if (!restoreLocal()) {
+registerServiceWorker();
+
+// Online režim je zatím skrytý (milník 2), takže ?room= ignorujeme a jdeme na úvod.
+if (!restoreLocal()) {
   show('home');
 }

@@ -7,6 +7,20 @@
   <meta name="theme-color" content="#e8ebf4" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#121931" media="(prefers-color-scheme: dark)">
   <title>Mistr Impostor</title>
+  <meta name="description" content="Párty hra pro partu kamarádů. Všichni znají tajemství – až na jednoho.">
+
+  <!-- PWA. Všechny cesty jsou relativní, aby appka fungovala i na podcestě (GitHub Pages). -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+  <!-- iOS: spuštění na celou obrazovku jako appka -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Impostor">
+
   <link rel="preload" href="fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/onest-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles/main.css">
@@ -43,7 +57,8 @@
       </header>
       <div class="home-actions">
         <button class="btn btn-primary btn-lg" data-go="local-setup">Hrát na jednom telefonu</button>
-        <div class="btn-pair">
+        <!-- Online režim je hotový až v milníku 2; do té doby je vstup schovaný. -->
+        <div class="btn-pair" hidden>
           <button class="btn" data-go="online-create">Založit místnost</button>
           <button class="btn" data-go="online-join">Připojit se</button>
         </div>
